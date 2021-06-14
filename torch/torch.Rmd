@@ -1,7 +1,7 @@
 ---
-title: "Débuter avec torch"
-output: learnr::tutorial
-runtime: shiny_prerendered
+title : "Débuter avec torch"
+output : learnr::tutorial
+runtime : shiny_prerendered
 ---
 
 ```{r setup, include=FALSE}
@@ -20,7 +20,7 @@ library(zeallot)
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## Bienvenu(e)s!
+## Bienvenu(e)s !
 
 Aujourd'hui, on va vous montrer comment faire de l'apprentissage automatique avec `torch` et son API de haut niveau, `luz`.
 
@@ -58,7 +58,7 @@ Ce que `keras` est à `tensorflow` -- une API de haut niveau qui uniformise et i
 
 -   [tabnet](https:/github.com/mlverse/tabnet)
 
--   ... et plus encore!
+-   ... et plus encore !
 
 ### Nos objectifs pour aujourd'hui
 
@@ -91,7 +91,7 @@ library(dplyr)
 
 Les tenseurs peuvent être créés directement à partir de valeurs R en utilisant torch_tensor(). En option, nous pouvons définir les attributs du tenseur, y compris le type de données, le dispositif sur lequel il vit, et plus encore.
 
-Ici, nous créons des tenseurs unidimensionnels (donc, des vecteurs):
+Ici, nous créons des tenseurs unidimensionnels (donc, des vecteurs) :
 
 ```{r, eval=FALSE, echo=TRUE}
 torch_tensor(1)
@@ -131,7 +131,7 @@ torch_logspace(start = 0.1, end = 1.0, steps = 5)
 
 #### Reconversion en R
 
-Les tenseurs sont reconvertis en R en utilisant `as.numeric()`, `as.matrix()`, ou `as.array()`:
+Les tenseurs sont reconvertis en R en utilisant `as.numeric()`, `as.matrix()`, ou `as.array()` :
 
 ```{r, eval=FALSE, echo=TRUE}
 torch_tensor(2) %>% as.numeric()
@@ -153,7 +153,7 @@ torch_add(t1, t2)
 t1$add(t2)
 ```
 
-Dans les deux cas, les tenseurs originaux ne sont pas modifiés du tout; par contre, un nouvel objet est créé. Normalement, vous alliez simplement l'assigner à une nouvelle variable :
+Dans les deux cas, les tenseurs originaux ne sont pas modifiés du tout ; par contre, un nouvel objet est créé. Normalement, vous alliez simplement l'assigner à une nouvelle variable :
 
 ```{r, eval=FALSE, echo=TRUE}
 t3 <- t1$add(t2)
@@ -162,14 +162,14 @@ t1
 t3
 ```
 
-Dans les rares cas où vous devez modifier le tenseur original, vous pouvez utiliser les variantes trait de soulignement correspondantes:
+Dans les rares cas où vous devez modifier le tenseur original, vous pouvez utiliser les variantes trait de soulignement correspondantes :
 
 ```{r, eval=FALSE, echo=TRUE}
 t1$add_(t2)
 t1
 ```
 
-Voici quelques-unes des nombreuses opérations matricielles disponibles. `$mul()` effectue une multiplication par éléments; `$matmul()` effectue une multiplication matricielle; `$dot()` calcule le produit scalaire :
+Voici quelques-unes des nombreuses opérations matricielles disponibles. `$mul()` effectue une multiplication par éléments ; `$matmul()` effectue une multiplication matricielle ; `$dot()` calcule le produit scalaire :
 
 ```{r, eval=FALSE, echo=TRUE}
 t1$mul(t2)
@@ -194,7 +194,7 @@ t1
 t1$squeeze(1)
 ```
 
-Le dernier, par contre, ajoute une dimension singleton:
+Le dernier, par contre, ajoute une dimension singleton :
 
 ```{r, eval=FALSE, echo=TRUE}
 t1$unsqueeze(4)
@@ -209,11 +209,11 @@ t3 <- t1$view(24)
 
 ```
 
-En fait, `$view()` ne crée pas réellement un tenseur nouveau; au lieu de cela, cette méthode arrange pour que la nouvelle référence se réfère toujours au même emplacement en mémoire, et stocke juste quelques métadonnées qui indiquent à `torch` comment interpréter les octets respectifs. Il y a des situations où `$view()` ne peut pas être utilisé; dans ce cas, vous pouvez toujours utiliser `$reshape()` à sa place. Contrairement à `$view()`, `$reshape()` fera une copie physique si nécessaire.
+En fait, `$view()` ne crée pas réellement un tenseur nouveau ; au lieu de cela, cette méthode arrange pour que la nouvelle référence se réfère toujours au même emplacement en mémoire, et stocke juste quelques métadonnées qui indiquent à `torch` comment interpréter les octets respectifs. Il y a des situations où `$view()` ne peut pas être utilisé ; dans ce cas, vous pouvez toujours utiliser `$reshape()` à sa place. Contrairement à `$view()`, `$reshape()` fera une copie physique si nécessaire.
 
 #### Indexation et découpage en tranches
 
-L'indexation dans `torch` est basée sur 1, tout comme en R en général. Et tout comme daens R, les dimensions singleton seront abandonnées - sauf si vous spécifiez`drop = FALSE`:
+L'indexation dans `torch` est basée sur 1, tout comme en R en général. Et tout comme en R, les dimensions singleton seront abandonnées - sauf si vous spécifiez`drop = FALSE` :
 
 ```{r, eval=FALSE, echo=TRUE}
 t1
@@ -223,14 +223,14 @@ t1[ , 1, , , drop = FALSE]
 
 ```
 
-Les plages de valeurs ("tranches") se peuvent accéder en utilisant le point-virgule:
+Les plages de valeurs ("tranches") se peuvent accéder en utilisant le point-virgule :
 
 ```{r, eval=FALSE, echo=TRUE}
 t1[1, 1, 1:2, ]
 t1[1, 1, 1:2, , drop = FALSE]
 ```
 
-Un raccourci qui n'existe pas en R (où la même syntaxe a une sémantique différente), l'indice -1 est utilisé pour faire référence au dernier élément d'une dimension singleton:
+Un raccourci qui n'existe pas en R (où la même syntaxe a une sémantique différente), l'indice -1 est utilisé pour faire référence au dernier élément d'une dimension singleton :
 
 ```{r, eval=FALSE, echo=TRUE}
 t2 <- torch_tensor(1:17)
@@ -261,23 +261,23 @@ t1$add(t2)
 
 Comme dernier exemple, nous voyons ici à la fois l'ajout virtuel d'une dimension singleton (à `t1`) et la "réutilisabilité" des dimensions singleton montrée avant. Cette dernière idée est utilisée deux fois, pour `t1` ainsi que pour `t2`.
 
-#### Annexe: Règles de diffusion
+#### Annexe : Règles de diffusion
 
     # 1 Nous alignons les formes du tableau, en commençant par la droite.
       
       # Exemple
 
-      # t1, forme:     8  1  6  1
-      # t2, forme:        7  1  5
+      # t1, forme :     8  1  6  1
+      # t2, forme :        7  1  5
       
 
     # 2 En regardant à partir de la droite, les tailles le long des axes alignés doivent soit correspondre exactement, soit l'une d'entre elles doit être égale à 1.
     # Dans ce dernier cas, le tenseur à une dimension est diffusé vers le plus long.
 
-      # Exemple: Cela se produit dans la dernière (pour t1) ainsi que dans l'avant-dernière dimension (pour t2).
+      # Exemple : Cela se produit dans la dernière (pour t1) ainsi que dans l'avant-dernière dimension (pour t2).
 
-      # t1, forme:     8  1  6  5
-      # t2, forme:        7  6  5
+      # t1, forme :     8  1  6  5
+      # t2, forme :        7  6  5
 
 
     # 3 Si à gauche, l'un des tableaux a un axe supplémentaire (ou plus d'un),
@@ -286,17 +286,17 @@ Comme dernier exemple, nous voyons ici à la fois l'ajout virtuel d'une dimensio
 
     #  Ensuite, la diffusion se fera comme indiqué dans (2).
 
-      # Exemple: Ça se passe dans la dimension la plus à gauche de t1. D'abord,   il y a une expansion virtuelle
+      # Exemple : Ça se passe dans la dimension la plus à gauche de t1. D'abord,   il y a une expansion virtuelle
 
-      # t1, forme:     8  1  6  1
-      # t2, forme:     1  7  1  5
+      # t1, forme :     8  1  6  1
+      # t2, forme :     1  7  1  5
 
-      # et ensuite, la diffusion se produit:
+      # et ensuite, la diffusion se produit :
       
-      # t1, forme:     8  1  6  1
-      # t2, forme:     8  7  1  5
+      # t1, forme :     8  1  6  1
+      # t2, forme :     8  7  1  5
 
-#### Exercice: Tenseurs
+#### Exercice : Tenseurs
 
 Dans les exercices suivants, essayez de traduire le code R en opérations équivalentes `torch`.
 
@@ -321,7 +321,7 @@ t1
 t2
 ```
 
-2.  Multipliez les matrices, faites la somme de tous les éléments et prenez la racine carrée:
+2.  Multipliez les matrices, faites la somme de tous les éléments et prenez la racine carrée :
 
 ```{r tensors2, exercise=TRUE, exercise.eval=TRUE}
 (m1 %*% m2)^2 %>% sum() %>% sqrt()
@@ -375,28 +375,28 @@ Tout comme `torch_sum()`, `torch_mean()` et`torch_std()` ont besoin que leur ent
 
 #### Comment ça marche
 
-`torch` autograd fournit de la différenciation automatique pour les opérations exécutées sur les tenseurs. Pour que cela se produise, le tenseur "source" (ou "feuille", comme `torch` l'appelle) - celui par rapport auquel nous voulons que les dérivés soient calculés - doit être créé avec `requires_grad = TRUE`. Appelons-le `a`:
+`torch` autograd fournit de la différenciation automatique pour les opérations exécutées sur les tenseurs. Pour que cela se produise, le tenseur "source" (ou "feuille", comme `torch` l'appelle) - celui par rapport auquel nous voulons que les dérivés soient calculés - doit être créé avec `requires_grad = TRUE`. Appelons-le `a` :
 
 ```{r, eval=FALSE, echo=TRUE}
 a <- torch_tensor(matrix(1:4, ncol = 2, byrow = TRUE), dtype = torch_float(), requires_grad = TRUE)
 
 ```
 
-Dans cet exemple, `c`, la sortie, dépend de `a` via `b`:
+Dans cet exemple, `c`, la sortie, dépend de `a` via `b` :
 
 ```{r, eval=FALSE, echo=TRUE}
 b <- a$mul(2)
 c <- b$sum()
 ```
 
-Jusqu'à présent, aucun dérivé n'a encore été calculé. Mais `torch` sait ce qu'il faut faire si nous le lui demandons. Plus précisément, il connaît les opérations concrètes pour lesquelles il va falloir les dérivées:
+Jusqu'à présent, aucun dérivé n'a encore été calculé. Mais `torch` sait ce qu'il faut faire si nous le lui demandons. Plus précisément, il connaît les opérations concrètes pour lesquelles il va falloir les dérivées :
 
 ```{r, eval=FALSE, echo=TRUE}
 c$grad_fn
 b$grad_fn
 ```
 
-Pour les faire calculer, appelez `$backward()`sur le tenseur de sortie:
+Pour les faire calculer, appelez `$backward()`sur le tenseur de sortie :
 
 ```{r, eval=FALSE, echo=TRUE}
 c$backward()
@@ -408,7 +408,7 @@ Maintenant, le gradient de `c` par rapport à `a` peut être trouvé dans le cha
 a$grad
 ```
 
-Lorsque nous mettons à jour un tenseur "feuille", par exemple dans l'optimisation, nous ne voulons pas que `torch` enregistre cette opération pour le calcul ultérieur des dérivés. Dans ces cas, nous devons lui dire d'exempter l'opération en question du processus:
+Lorsque nous mettons à jour un tenseur "feuille", par exemple dans l'optimisation, nous ne voulons pas que `torch` enregistre cette opération pour le calcul ultérieur des dérivés. Dans ces cas, nous devons lui dire d'exempter l'opération en question du processus :
 
 ```{r, eval=FALSE, echo=TRUE}
      
@@ -431,7 +431,7 @@ f <- function(x) x^2 - 7
 # on démarre à x = 11
 param <- torch_tensor(11, requires_grad = TRUE)
 
-# taux d'apprentissage : fraction du gradient à soustraire
+# taux d'apprentissage  : fraction du gradient à soustraire
 lr <- 0.1
 
 for (i in 1:num_iterations) {
@@ -449,7 +449,7 @@ Dans l'exercice, il vous est demandé de compléter les pièces manquantes.
 
 #### Exercice : Minimisation de fonction
 
-Remplissez les lignes marquées "à compléter". Une fois le code exécuté, expérimentez avec le taux d'apprentissage et comparez les résultats. Quel est un bon taux d'apprentissage pour ce problème?
+Remplissez les lignes marquées "à compléter". Une fois le code exécuté, expérimentez avec le taux d'apprentissage et comparez les résultats. Quel est un bon taux d'apprentissage pour ce problème ?
 
 ```{r autograd, exercise=TRUE, exercise.eval=TRUE}
 # fonction à minimiser
@@ -458,21 +458,21 @@ f <- function(x) x^2 - 7
 # on démarre à x = 11
 param <- torch_tensor(11, requires_grad = TRUE)
 
-# taux d'apprentissage : fraction du gradient à soustraire
+# taux d'apprentissage  : fraction du gradient à soustraire
 lr <- 0.1
 
 for (i in 1:10) {
   
-  cat("Iteration: ", i, "\n")
+  cat("Iteration : ", i, "\n")
   
   # appeler la fonction sur la valeur du paramètre actuel
   value <- 777 # à compléter
-  cat("Value is: ", as.numeric(value), "\n")
+  cat("Value is : ", as.numeric(value), "\n")
   
   # calculer le gradient de la valeur par rapport au paramètre
   # à compléter
   # décommentez la ligne suivante quand vous êtes prêt
-  # cat("Gradient is: ", as.matrix(param$grad), "\n")
+  # cat("Gradient is : ", as.matrix(param$grad), "\n")
   
   # mettre à jour le paramètre
   # envelopper dans with_no_grad()
@@ -484,7 +484,7 @@ for (i in 1:10) {
     # à compléter
   })
   
-  cat("After update: Param is: ", as.matrix(param), "\n\n")
+  cat("After update : Param is : ", as.matrix(param), "\n\n")
   
   if (abs(-7 - as.numeric(value)) < 0.00005) break
 }
@@ -499,20 +499,20 @@ lr <- 0.5
 
 for (i in 1:10) {
   
-  cat("Iteration: ", i, "\n")
+  cat("Iteration : ", i, "\n")
   
   value <- f(param)
-  cat("Value is: ", as.numeric(value), "\n")
+  cat("Value is : ", as.numeric(value), "\n")
 
   value$backward()
-  cat("Gradient is: ", as.matrix(param$grad), "\n")
+  cat("Gradient is : ", as.matrix(param$grad), "\n")
   
   with_no_grad({
     param$sub_(lr * param$grad)
     param$grad$zero_()
   })
   
-  cat("After update: Param is: ", as.matrix(param), "\n\n")
+  cat("After update : Param is : ", as.matrix(param), "\n\n")
   
   if (abs(-7 - as.numeric(value)) < 0.00005) break
 }
@@ -521,15 +521,15 @@ for (i in 1:10) {
 
 ### Modules et optimiseurs
 
-Bien que tout puisse être fait avec les tenseurs et autograd seuls, coder un grand réseau neuronal de cette manière serait une tâche assez lourde. Heureusement, ce n'est pas nécessaire. D'une part, torch fournit un ensemble riche de modules de réseaux neuronaux qui cachent la logique des couches; et d'autre part, ses optimiseurs encapsulent des algorithmes d'optimisation connus pour leur efficacité dans l'apprentissage profond.
+Bien que tout puisse être fait avec les tenseurs et autograd seuls, coder un grand réseau neuronal de cette manière serait une tâche assez lourde. Heureusement, ce n'est pas nécessaire. D'une part, torch fournit un ensemble riche de modules de réseaux neuronaux qui cachent la logique des couches ; et d'autre part, ses optimiseurs encapsulent des algorithmes d'optimisation connus pour leur efficacité dans l'apprentissage profond.
 
 #### Modules de réseaux neuronaux
 
-`torch` utilise le terme module pour les couches individuelles (par exemple, couche , couche convolutive ...) ainsi que pour les modèles, c'est-à-dire les réseaux neuronaux. La logique ici est que les modules sont composables; un modèle/module n'est rien d'autre qu'une composition de modules plus petits, qui peuvent à nouveau contenir des modules encore plus petits, etc.
+`torch` utilise le terme module pour les couches individuelles (par exemple, couche , couche convolutive ...) ainsi que pour les modèles, c'est-à-dire les réseaux neuronaux. La logique ici est que les modules sont composables ; un modèle/module n'est rien d'autre qu'une composition de modules plus petits, qui peuvent à nouveau contenir des modules encore plus petits, etc.
 
 ##### Module linéaire
 
-Voici une transformation affine, codée manuellement:
+Voici une transformation affine, codée manuellement :
 
 ```{r, eval=FALSE, echo=TRUE}
 # données d'entrée
@@ -543,7 +543,7 @@ b <- torch_tensor(0.5, requires_grad = TRUE)
 x$matmul(w) + b  
 ```
 
-Nous pouvons réaliser la même chose en utilisant un module linéaire:
+Nous pouvons réaliser la même chose en utilisant un module linéaire :
 
 ```{r, eval=FALSE, echo=TRUE}
 l <- nn_linear(in_features = 2, out_features = 1)
@@ -572,7 +572,7 @@ loss <- l(x)$sum()
 loss$grad_fn
 ```
 
-Nous devrons toujours appeler `$backward()`pour voir les dérivés en effet calculés. Ici, elles sont encore indéfinies:
+Nous devrons toujours appeler `$backward()`pour voir les dérivés en effet calculés. Ici, elles sont encore indéfinies :
 
 ```{r, eval=FALSE, echo=TRUE}
 l$weight$grad
@@ -596,7 +596,7 @@ Il existe de nombreux autres modules. Voici un tenseur imitant une image RVB 32x
 img <- torch_rand(c(1, 3, 32, 32))
 ```
 
-Maintenant, `nn_conv2d()` est utilisé pour créer une couche convolutive, et son filtre 3x3 est appliqué à l'image:
+Maintenant, `nn_conv2d()` est utilisé pour créer une couche convolutive, et son filtre 3x3 est appliqué à l'image :
 
 ```{r, eval=FALSE, echo=TRUE}
 conv <- nn_conv2d(in_channels = 3, out_channels = 1, kernel_size = 3, padding = 1)
@@ -604,7 +604,7 @@ conv <- nn_conv2d(in_channels = 3, out_channels = 1, kernel_size = 3, padding = 
 conv(img)
 ```
 
-Un autre module couramment utilisé dans le traitement des images est `nn_max_pool2d()` pour la réduction de la taille spatiale:
+Un autre module couramment utilisé dans le traitement des images est `nn_max_pool2d()` pour la réduction de la taille spatiale :
 
 ```{r, eval=FALSE, echo=TRUE}
 pool <- nn_max_pool2d(kernel_size = 2)
@@ -617,7 +617,7 @@ Dans la troisième section de ce tutoriel, nous allons rencontrer des modules co
 
 Pour construire un " modèle " à partir de " couches " telles que celles que nous avons montrées ci-dessus, nous pouvons utiliser `nn_sequential()`.
 
-Voici un modèle composé de deux couches linéaires, avec entre elles un module ReLU (`nn_relu()`). ReLU est l'abréviation de "Rectified Linear Unit" (unité linéaire rectifiée); son but est d'introduire une certaine non-linéarité dans ce modèle:
+Voici un modèle composé de deux couches linéaires, avec entre elles un module ReLU (`nn_relu()`). ReLU est l'abréviation de "Rectified Linear Unit" (unité linéaire rectifiée) ; son but est d'introduire une certaine non-linéarité dans ce modèle :
 
 ```{r, eval=FALSE, echo=TRUE}
 model <- nn_sequential(
@@ -635,7 +635,7 @@ Vous pouvez également définir vos propres modules. Nous en verrons des exemple
 
 #### Optimiseurs
 
-Parmi les optimiseurs les plus couramment utilisés dans l'apprentissage profond figurent Adam (`optim_adam()`), RMSProp (`optim_rmsprop()`), and Stochastic Gradient Descent (SGD; `optim_sgd()`).
+Parmi les optimiseurs les plus couramment utilisés dans l'apprentissage profond figurent Adam (`optim_adam()`), RMSProp (`optim_rmsprop()`), and Stochastic Gradient Descent (SGD ; `optim_sgd()`).
 
 Ici, nous utilisons `optim_adam()` pour démontrer leur utilisation.
 
@@ -657,7 +657,7 @@ model <- nn_sequential(
 optimizer <- optim_adam(model$parameters, lr = 0.01)
 ```
 
-Nous obtenons une prédiction:
+Nous obtenons une prédiction :
 
 ```{r, eval=FALSE, echo=TRUE}
 prediction <- model(x)
@@ -754,7 +754,7 @@ for (t in 1:200) {
   # erreur quadratique moyenne
   loss <- nnf_mse_loss(y_pred, y, reduction = "sum")
   if (t %% 10 == 0)
-    cat("Epoch: ", t, "   Loss: ", loss$item(), "\n")
+    cat("Epoch : ", t, "   Loss : ", loss$item(), "\n")
   
   ### -------- Rétropropagation -------- 
   
@@ -773,11 +773,11 @@ Bien qu'elle soit beaucoup plus pratique que de travailler uniquement avec des t
 
 #### Exercice : Formation d'un réseau de neurones
 
-Ci-dessous, vous trouverez le code de bout en bout pour former un réseau neuronal. Essayez de l'expérimenter un peu:
+Ci-dessous, vous trouverez le code de bout en bout pour former un réseau neuronal. Essayez de l'expérimenter un peu :
 
 Si vous modifiez le taux d'apprentissage, que se passe-t-il ?
 
-Essayez d'autres optimiseurs, tels que `optim_sgd()`. Comment cela affecte-t-il la formation?
+Essayez d'autres optimiseurs, tels que `optim_sgd()`. Comment cela affecte-t-il la formation ?
 
 ```{r modules, exercise=TRUE, exercise.eval=TRUE}
 # dimensionnalité de l'entrée (nombre de caractéristiques d'entrée)
@@ -814,7 +814,7 @@ for (t in 1:200) {
   # erreur quadratique moyenne
   loss <- nnf_mse_loss(y_pred, y, reduction = "sum")
   if (t %% 10 == 0)
-    cat("Epoch: ", t, "   Loss: ", loss$item(), "\n")
+    cat("Epoch : ", t, "   Loss : ", loss$item(), "\n")
   
   ### -------- Rétropropagation -------- 
   
@@ -833,7 +833,7 @@ for (t in 1:200) {
 
 `luz` est une API de haut niveau pour `torch` qui vous permet de former des réseaux de neurones dans un style déclaratif.
 
-Avec `luz`, le flux global ressemble beaucoup à celui de Keras:
+Avec `luz`, le flux global ressemble beaucoup à celui de Keras :
 
 1.  Vous définissez un modèle.
 
@@ -841,25 +841,23 @@ Avec `luz`, le flux global ressemble beaucoup à celui de Keras:
 
 3.  Vous l'entraînez en utilisant`fit(),` en passant les données d'entraînement et (facultativement) de validation, ainsi que le nombre d'époques à entraîner et un ensemble de rappels (tous deux facultatifs).
 
-### Exemple de bout en bout: MNIST
+### Exemple de bout en bout : MNIST
 
-Pour présenter `luz`, nous allons faire le "bonjour au monde" de l'apprentissage profond: la classification de chiffres sur le (in-)célèbre jeu de données MNIST. MNIST est disponible comme partie du paquet `torchvision`.
+Pour présenter `luz`, nous allons faire le "bonjour au monde" de l'apprentissage profond : la classification de chiffres sur le (in-)célèbre jeu de données MNIST. MNIST est disponible comme partie du paquet `torchvision`.
 
 #### Données
 
-In `torch` , data is fed to a network using `dataset`s and `dataloaders`. Their respective responsibilities are:
+Dans `torch`, les données sont fournies à un réseau en utilisant des `dataset`s et des `dataloaders`. Leurs responsabilités respectives sont les suivantes :
 
-Dans `torch`, les données sont fournies à un réseau en utilisant des `dataset`s et des `dataloaders`. Leurs responsabilités respectives sont les suivantes:
+-   `dataset` : Renvoie un seul élément de formation, de validation ou de test. Dans l'apprentissage supervisé, il s'agit d'une liste d'entrée et de cible. Optionnellement, s'occupe de tout prétraitement requis.
 
--   `dataset`: Renvoie un seul élément de formation, de validation ou de test. Dans l'apprentissage supervisé, il s'agit d'une liste d'entrée et de cible. Optionnellement, s'occupe de tout prétraitement requis.
+-   `dataloader` : Introduit les données dans le modèle. Normalement, cela se fait par lots de taille configurable. En option, un `dataloader` peut mélanger les données et organiser la parallélisation sur un sous-ensemble de processeurs disponibles.
 
--   `dataloader`: Introduit les données dans le modèle. Normalement, cela se fait par lots de taille configurable. En option, un `dataloader` peut mélanger les données et organiser la parallélisation sur un sous-ensemble de processeurs disponibles.
+`torchvision` est livré avec quelques jeux de données d'images, qui peuvent être demandés via `xxx_dataset()`. Ils seront téléchargés et préparés la première fois qu'ils sont instanciés (à moins que les données existent déjà dans l'emplacement spécifié).
 
-`torchvision` comes with a few image datasets, requestable via `xxx_dataset()`. They will be downloaded and prepared the first time they're instantiated (unless the data exist already in the specified location.
+Comme nous n'avons pas vraiment besoin de l'ensemble complet de données MNIST pour cette démonstration, nous ne préparons que la partie test (comme indiquée par la ligne `train = FALSE` ci-dessous). Nous la diviserons manuellement en parties formation et validation dans une minute.
 
-Since we don't really need the full MNIST dataset for this demonstration, we only prepare the test split (indicated by the line `train = FALSE` below). We'll split it up manually into training and validation parts in a minute.
-
-In the dataset constructor, the argument `transform =` serves to tell `torch` how the images should be pre-processed.
+Dans le constructeur du `dataset`, l'argument `transform =` sert à dire à torch comment les images doivent être prétraitées.
 
 ```{r, eval=FALSE, echo=TRUE}
 dir <- "~/Downloads/mnist" 
@@ -873,45 +871,45 @@ ds <- mnist_dataset(
 )
 ```
 
-`ds` now has 10,000 image-label pairs:
+`ds` a maintenant 10 000 paires image-étiquette :
 
 ```{r, eval=FALSE, echo=TRUE}
 length(ds)
 ```
 
-We can use indexing to inspect them:
+Nous pouvons utiliser l'indexation pour les inspecter :
 
 ```{r, eval=FALSE, echo=TRUE}
 ds[1]
 ```
 
-Using `dataset_subset()`, we divide those 10,000 pairs into training and validation sets:
+En utilisant `dataset_subset()`, nous divisons ces 10 000 paires en ensembles de formation et de validation :
 
 ```{r, eval=FALSE, echo=TRUE}
 train_id <- sample.int(length(ds), size = 0.7*length(ds))
 train_ds <- dataset_subset(ds, indices = train_id)
-valid_ds <- dataset_subset(ds, indices = which(!seq_along(ds) %in% train_id))
+valid_ds <- dataset_subset(ds, indices = which( !seq_along(ds) %in% train_id))
 ```
 
-Next, we create the respective `dataloader`s.
+Ensuite, nous créons les `dataloader`s respectifs.
 
 ```{r, eval=FALSE, echo=TRUE}
 train_dl <- dataloader(train_ds, batch_size = 128, shuffle = TRUE)
 valid_dl <- dataloader(valid_ds, batch_size = 128, shuffle = FALSE)
 ```
 
-With `dataloader`s, `length()` indicates the number of *batches*:
+Avec `dataloader`s, `length()` indique le nombre des *lots* :
 
 ```{r, eval=FALSE, echo=TRUE}
 length(train_dl)
 length(valid_dl)
 ```
 
-#### Model
+#### Modèle
 
-The model is a convolutional neural network that successively filters and downsizes its input, to finally arrive at a class prediction. There are ten types of digits (0-9), and for each digit, it will output a score for each of the ten possible labels.
+Le modèle est un réseau neuronal convolutif qui filtre et réduit successivement ses entrées, pour arriver finalement à une prédiction de classe. Il y a dix types de chiffres (0-9), et pour chaque chiffre, il produira un score pour chacune des dix étiquettes possibles.
 
-In the definition of the model, note the parameter `num_classes`. In this example, there is no real need to parameterize the number of classes the model can work with; however, we'd like to show how with `luz`, you can keep the model definition flexible and pass in the desired configuration at training time.
+Dans la définition du modèle, notez le paramètre num_classes. Dans cet exemple, il n'y a pas de réel besoin de paramétrer le nombre de classes avec lesquelles le modèle peut travailler ; cependant, nous aimerions montrer comment avec `luz`, vous pouvez garder la définition du modèle flexible et ne passer la configuration désirée qu'au moment de la formation.
 
 ```{r, eval=FALSE, echo=TRUE}
 net <- nn_module(
@@ -941,15 +939,15 @@ net <- nn_module(
 )
 ```
 
-#### Training
+#### Formation
 
-Now that we have the model definition, all that separates us from watching it being trained are two calls to `luz`: `setup()` and `fit()`.
+Maintenant que nous avons la définition du modèle, tout ce qui nous sépare de l'observation de son entraînement sont deux appels à `luz` : `setup()` et `fit()`.
 
--   Using `setup()`, we configure the loss function and the optimizer to be used; additionally, we can ask for a set of metrics to be computed.
+-   En utilisant `setup()`, nous configurons la fonction de perte et l'optimiseur à utiliser ; de plus, nous pouvons demander le calcul d'un ensemble de métriques.
 
--   By calling `fit`, we start the training process. The first argument is always the `dataloader` containing the training data; the remaining arguments are optional and include the number of epochs to train for, and possibly another `dataloader` for validation.
+-   En appelant fit, nous démarrons le processus d'apprentissage. Le premier argument est toujours le `dataloader` contenant les données d'entraînement ; les autres arguments sont facultatifs et incluent le nombre d'époques, et éventuellement un autre `dataloader` pour la validation.
 
-While `setup()` and `fit()` are "obligatory", `set_hparams()`, located between the two, is not. This function can be used to set variables used in the model; here we're passing in the desired value for `num_classes` referred to above.
+Alors que `setup()` et `fit()` sont "obligatoires", `set_hparams()`, située entre les deux, ne l'est pas. Cette fonction peut être utilisée pour définir les variables utilisées dans le modèle ; ici, nous passons la valeur souhaitée pour le paramètre `num_classes` mentionné ci-dessus.
 
 ```{r, eval=FALSE, echo=TRUE}
 fitted <- net %>%
@@ -964,41 +962,41 @@ fitted <- net %>%
   fit(train_dl, epochs = 3, valid_data = valid_dl, verbose = TRUE)
 ```
 
-#### Predictions
+#### Prédictions
 
-Predictions may be obtained using `predict()`, passing in the fitted model and the `dataloader` for which we want predictions computed.
+Les prédictions peuvent être obtenues en utilisant `predict()`, en passant le modèle entrâiné et le `dataloader` pour lequel nous voulons que les prédictions soient calculées.
 
-These predictions are nothing but the output from the model's final layer:
+Ces prédictions ne sont rien d'autre que la sortie de la couche finale du modèle :
 
 ```{r, eval=FALSE, echo=TRUE}
 preds <- predict(fitted, valid_dl)
 preds[1:10, ]
 ```
 
-The best-matching class here is the one for which the tensor value (the *score*) is highest. If we want actual probabilities, we can run the raw scores through a *softmax*:
+La classe la mieux ajustée est celle pour laquelle la valeur du tenseur (le score) est la plus élevée. Si, à la place de scores non-normalisés, nous souhaitons des probabilités, nous pouvons faire passer les scores bruts par un `softmax` :
 
 ```{r, eval=FALSE, echo=TRUE}
 (nnf_softmax(preds[1:10, ], dim = 2))$to(device = "cpu") %>% as.matrix() %>% round(2)
 ```
 
-#### Saving and loading models
+#### Sauvegarde et chargement de modèles
 
-Rounding up on `luz` essentials, here are its helper functions to save and load models:
+Pour compléter l'essentiel de `luz`, voici ses fonctions d'aide pour sauvegarder et charger les modèles :
 
 ```{r, eval=FALSE, echo=TRUE}
 luz_save(fitted, "mnist-cnn.pt")
 copy <- luz_load("mnist-cnn.pt")
 ```
 
-### Exercise: Callbacks
+### Exercice : Rappels
 
-Callbacks offer an extremely flexible way to customize the training routine. `luz` itself uses callbacks internally, too, to compute metrics, for example, or to display training progress.
+Les rappels offrent un moyen extrêmement flexible de personnaliser la routine d'entraînement. `luz` lui-même utilise des rappels en interne, par exemple pour calculer les métriques ou pour afficher la progression de l'entraînement.
 
-Here is a simple callback that gets active at two specified categories of "time":
+Voici une rappel simple qui devient active à deux catégories de "temps" spécifiées :
 
-1.  Whenever training has finished on a single batch (`on_train_batch_end()`).
+1.  Lorsque l'entraînement est terminé pour un seul lot (`on_train_batch_end()`).
 
-2.  Whenever training has completed one full epoch (`on_epoch_end())`.
+2.  Quand l'entraînement a terminé une époque complète (`on_epoch_end()`).
 
 ```{r, eval=FALSE, echo=TRUE}
 print_callback <- luz_callback(
@@ -1019,19 +1017,19 @@ print_callback <- luz_callback(
 )
 ```
 
-Callbacks are passed to `luz` in the `fit()` call:
+Les rappels sont passés à `luz` dans l'appel `fit()` :
 
 ```{r, eval=FALSE, echo=TRUE}
 fitted <- net %>%
   setup(...) %>%
   fit(..., callbacks = list(
-    print_callback(message = "Done!")
+    print_callback(message = "Fini !")
   ))
 ```
 
-Via a special-purpose context reference (`ctx`), callbacks have access to a large number of model-internal and process-dependent objects, such as the model itself, a list of optimizers used, the current epoch, and more.
+Via une référence de contexte (`ctx`), les rappels ont accès à un grand nombre d'objets internes au modèle et dépendants du processus, tels que le modèle lui-même, une liste d'optimiseurs utilisés, l'époque actuelle, et plus encore.
 
-For this exercise, implement a callback that at the end of every epoch, says "Done with epoch \<n\>", and plug it into the training routine.
+Pour cet exercice, implémentez un rappel qui, à la fin de chaque époque, dit "Done with epoch \<n\>", et insérez-le dans la routine de formation.
 
 ```{r custom-callback, exercise=TRUE, exercise.eval=TRUE}
 which_epoch_callback <- luz_callback(
@@ -1050,56 +1048,56 @@ which_epoch_callback <- luz_callback(
   name = "which_epoch_callback",
   
   on_epoch_end = function() {
-    cat("Done with epoch", ctx$epoch, "\n")
+    cat("Terminé avec l'époch :", ctx$epoch, "\n")
   }
 )
 ```
 
-### Exercise: Creating a custom metric
+### Exercise : Créer sa propre métrique
 
-While `luz` provides a great number of metrics, you can easily implement your own if needed. *Metric* objects keep running aggregates of the indicator. in question. At each epoch, aggregates are re-initialized to their starting values (zero, in most cases).
+Bien que `luz` fournisse un grand nombre de métriques, vous pouvez facilement implémenter les vôtres si nécessaire. Les objets métriques conservent des agrégats courants de l'indicateur en question. À chaque époque, les agrégats sont réinitialisés à leur valeur de départ (zéro, dans la plupart des cas).
 
-A `luz` metric is an R6 object with three methods:
+Une métrique `luz` est un objet R6 avec trois méthodes :
 
--   `initialize()`, used to define the starting values for every variable to keep track of;
+-   `initialize()`, utilisée pour définir les valeurs de départ de chaque variable à suivre ;
 
--   `update()`, telling `luz` how to update these variables at every training (validation, resp.) step; and
+-   `update()`, qui indique à `luz` comment mettre à jour ces variables à chaque étape de formation (ou de validation, respectivement) ; et
 
--   `compute()`, used to define the indicator to be outputted to the user.
+-   `compute()`, utilisée pour définir l'indicateur à renvoyer.
 
-Below, you'll be tasked to implement accuracy yourself. Here is an outline of what's to be done:
+Ci-dessous, vous serez chargé d'implémenter vous-même la précision. Voici un aperçu de ce qu'il faut faire :
 
 ```{r, eval=FALSE, echo=TRUE}
 my_accuracy <- luz_metric(
   abbrev = "my_acc", 
   
   initialize = function() {
-    # initialize two fields:
-    # one to hold the number of correct predictions
-    # one to hold the running total of predictions
-    # e.g.
+    # initialiser deux champs :
+    # un pour contenir le nombre de prédictions correctes
+    # un pour contenir le total courant des prédictions.
+    # par exemple
     # self$correct <-
     # self$total <-
   },
  
   update = function(preds, target) {
-    # 1: use pred (function input no. 1) to compute the indices of the most likely class (for the complete batch)
+    # 1 : utiliser pred (argument de la fonction n° 1) pour calculer les indices de la classe la plus probable (pour le lot complet).
     # pred <- 
     
-    # 2: update self$correct: add number of correct predictions
+    # 2 : mettre à jour self$correct : ajouter le nombre de prédictions correctes.
     # self$correct <- 
     
-    # 3: update the running total of predictions
+    # 3 : mettre à jour le total courant des prédictions
     # self$total <- 
   },
   
   compute = function() {
-    # return proportion of correct predictions
+    # retourner la proportion de prédictions correctes
   }
 )
 ```
 
-You can substitute your own implementation of accuracy in the training process, replacing `luz_metric_accuracy()`. Before doing that, test your implementation standalone, comparing with the official implementation:
+Vous pouvez substituer votre propre implémentation de la précision dans le processus de formation, en remplaçant `luz_metric_accuracy()`. Avant de faire cela, testez votre implémentation de manière autonome, en la comparant avec l'implémentation officielle :
 
 ```{r, eval=FALSE, echo=TRUE}
 preds_10 <- preds[1:10, ]
@@ -1121,27 +1119,27 @@ my_accuracy <- luz_metric(
   abbrev = "my_acc", 
   
   initialize = function() {
-    # initialize two fields:
-    # one to hold the number of correct predictions
-    # one to hold the running total of predictions
-    # e.g.
+    # initialiser deux champs :
+    # un pour contenir le nombre de prédictions correctes
+    # un pour contenir le total courant des prédictions.
+    # par exemple
     # self$correct <-
     # self$total <-
   },
  
   update = function(preds, target) {
-    # 1: use preds (function input no. 1) to compute the indices of the classes with the highest scores
+    # 1 : utiliser pred (argument de la fonction n° 1) pour calculer les indices de la classe la plus probable (pour le lot complet).
     # pred <- 
     
-    # 2: update self$correct: add number of correct predictions
+    # 2 : mettre à jour self$correct : ajouter le nombre de prédictions correctes.
     # self$correct <- 
     
-    # 3: update the running total of predictions
+    # 3 : mettre à jour le total courant des prédictions
     # self$total <- 
   },
   
   compute = function() {
-    # return proportion of correct predictions
+    # retourner la proportion de prédictions correctes
   }
 )
 ```
@@ -1171,11 +1169,11 @@ my_accuracy <- luz_metric(
 )
 ```
 
-## Time-series forecasting
+## Prévision de séries temporelles
 
-To illustrate time-series forecasting with `torch`, we make use of the `vic_elec` dataset, available through package `tsibbledata`. It provides three years of half-hourly electricity demand for Victoria, Australia, augmented by same-resolution temperature information and a daily holiday indicator.
+Pour illustrer la prévision de séries temporelles avec `torch`, nous utilisons l'ensemble de données `vic_elec`, disponible via le paquet `tsibbledata`. Il fournit trois années de demande d'électricité à la demi-heure pour Victoria, Australie, augmentée par des informations de température de même résolution et un indicateur de vacances quotidien.
 
-For faster training, we aggregate the data by day. We throw away everything but `Demand` itself, relying on the univariate series exclusively.
+Pour un apprentissage plus rapide, nous agrégeons les données par jour. Nous jetons tout sauf la demande elle-même, en nous basant exclusivement sur la série univariée.
 
 ```{r, eval=FALSE, echo=TRUE}
 vic_elec_daily <- vic_elec %>%
@@ -1185,7 +1183,7 @@ vic_elec_daily <- vic_elec %>%
     Demand = sum(Demand) / 1e3) 
 ```
 
-To quickly get an impression what we're dealing with, it's convenient to use `feasts::STL()`.
+Pour avoir rapidement une idée de ce à quoi nous avons affaire, il est pratique d'utiliser `feasts::STL()`.
 
 ```{r, eval=FALSE, echo=TRUE}
 cmp <- vic_elec_daily %>% 
@@ -1196,45 +1194,43 @@ cmp %>% autoplot()
 
 ```
 
-Before we create a `dataset`, a `dataloader`, and a model, let's quickly talk about time-series prediction with deep learning in general.
+Avant de créer un `dataset`, un `dataloader` et un modèle, parlons rapidement de la prédiction de séries temporelles avec l'apprentissage profond en général.
 
-### Time-series forecasting with deep learning in a nutshell
+### La prévision des séries chronologiques avec l'apprentissage profond en bref
 
-In a linear model, individual observations are independent. Their order does not matter. The same holds for sets of images (not the pixels *in* an image, though).
+Dans un modèle linéaire, les observations individuelles sont indépendantes. Leur ordre n'a pas d'importance. Il en va de même pour les ensembles d'images (pas les pixels d'une image, cependant).
 
-But with sequences, such as spoken language or consecutive-in-time measurements, the order is essential. We thus need neural network models that respect sequentiality.
+Mais avec les séquences, comme le langage parlé ou les mesures consécutives dans le temps, l'ordre est essentiel. Nous avons donc besoin de modèles de réseaux neuronaux qui respectent la séquentialité.
 
-Traditionally, the type of data we're talking about has been the domain of *recurrent neural networks* (RNNs). They are called *recurrent* because, in addition to handling a new batch item at every [processing] time step, they keep -- and continuously update -- an internal state. This is often referred to as the *hidden* *state*.
+Traditionnellement, le type de données dont nous parlons est le domaine des réseaux neuronaux récurrents (RNN). Ils sont dits récurrents car, en plus de traiter un nouvel élément de lot à chaque pas de temps (d'entrâinement), ils conservent - et mettent à jour en permanence - un état interne. Cet état est souvent appelé l'état caché.
 
-In this family of RNNs, the most-established model architectures are *Gated Recurrent Unit* (GRU) and *Long Short-Term Memory* (LSTM). LSTM differs from GRU in that it keeps an additional internal state, sometimes called *cell state*, that is said to enable it to keep longer-term remembrances. In this tutorial, we use GRUs only, but adapting the code for LSTM is a manageable effort.
+Dans cette famille de RNN, les architectures de modèle les plus établies sont l'unité récurrente à grille (GRU) et la mémoire à long terme (LSTM). La LSTM diffère de la GRU en ce qu'elle conserve un état interne supplémentaire, parfois appelé état de cellule, qui lui permet de se souvenir à plus long terme. Dans ce tutoriel, nous utilisons uniquement les GRU, mais l'adaptation du code pour les LSTM est un effort gérable.
 
-For RNNs to learn temporal dependencies, the data need to be prepared in a way that each batch item contains information about several time steps. Let's see how that works.
+Pour que les RNN puissent apprendre les dépendances temporelles, les données doivent être préparées de manière à ce que chaque élément du lot contienne des informations sur plusieurs étapes temporelles. Voyons comment cela fonctionne.
 
-### Creating a `dataset` for time-series forecasting
+### Création d'un `dataset` pour la prévision de séries temporelles
 
-In our introduction to `luz`, we were able to make use of a pre-existing `dataset` object, namely, `mnist_dataset()` provided by `torchvision`. Now, we will build a custom `dataset`.
+Dans notre introduction à `luz`, nous avons pu utiliser un objet de jeu de données préexistant, à savoir `mnist_dataset()` fourni par `torchvision`. Maintenant, nous allons construire un jeu de données personnalisé.
 
-#### The `dataset` object
+#### L'objet `dataset`
 
-`dataset`s are R6 objects that implement three methods: `initialize()`, `.getitem()`, and `.length()`. Here
+Les `dataset` sont des objets R6 qui implémentent trois méthodes : `initialize()`, `.getitem()`, et `.length()`. Ici
 
--   `initialize()` is where the data are stored into instance variables (and possibly, pre-processed);
+-   `initialize()`est l'endroit où les données sont stockées dans des variables d'instance (et éventuellement, prétraitées) ;
 
--   `.length()` tells the caller (a `dataloader`, in general) how many items there are in the `dataset`; and
+-   `.length()` indique à l'appelant (un `dataloader`, en général) combien d'éléments il y a dans le `dataset`; et
 
--   `.getitem()` defines what exactly should be returned as a single `<source, target>` (i.e., (`x,y)` ) pair.
+-   `.getitem()` définit ce qui doit être renvoyé sous la forme d'une seule paire \<source, cible\> (c'est-à-dire `(x,y)` ).The last one of these is where the "business logic" surfaces.
 
-The last one of these is where the "business logic" surfaces.
+#### Un `dataset` de séries temporelles pour la prédiction à un pas d'avance
 
-#### A time-series `dataset` for one-step-ahead prediction
+Pour que chaque élément du lot contienne des informations sur une séquence, `x` doit être un vecteur de mesures consécutives. Combien de mesures ? Cela dépend de ce que nous savons de la série temporelle (ainsi que de l'expérimentation).
 
-For each batch item to contain information about a sequence, `x` needs to be a vector of consecutive measurements. How many measurements? This depends on what we know about the time series (as well as experimentation).
+Quant à `y`, il dépend du nombre de pas de temps que nous voulons prévoir à l'avance. Ici, nous commençons par un seul pas. (Nous adapterons cela pour une prédiction à plusieurs étapes plus tard).
 
-As to `y`, it depends on the number of time steps we want to forecast ahead. Here, we start with a single step. (We'll adapt this for multi-step prediction later.)
+Pour permettre l'expérimentation avec le nombre de pas de temps qu'on utilise à apprendre, nous rendons `elec_dataset()` configurable à cet égard (voir le paramètre `n_timesteps` passé à `initialize()`).
 
-To allow for experimentation with the number of time steps to learn from, we make `elec_dataset()` configurable in that respect (see the `n_timesteps` parameter passed to `initialize()`).
-
-Then, *for each item*, the `dataset` returns a list of `(x,y)`, where `x` is a vector of consecutive observations (starting at the current index), and `y` is the measurement right thereafter:
+Ensuite, pour chaque élément, le `dataset` renvoie une liste de `(x,y)`, où `x` est un vecteur d'observations consécutives (commençant à l'indice actuel), et `y` est la mesure juste après :
 
 ```{r, eval=FALSE, echo=TRUE}
 elec_dataset <- dataset(
@@ -1265,7 +1261,7 @@ elec_dataset <- dataset(
 )
 ```
 
-Now, we create instances of such a `dataset` for training as well as validation. We first need to extract the `Demand` feature from the `tsibble`:
+Maintenant, nous créons des instances d'un tel `dataset` pour la formation et la validation. Nous devons d'abord extraire la caractéristique de la demande à partir du tsibble :
 
 ```{r, eval=FALSE, echo=TRUE}
 elec_train <- vic_elec_daily %>% 
@@ -1282,14 +1278,14 @@ elec_valid <- vic_elec_daily %>%
 
 ```
 
-For better training performance, we standardize the data. To that end, we compute mean and standard deviation for the training set:
+Pour améliorer les performances de formation, nous normalisons les données. À cette fin, nous calculons la moyenne et l'écart-type de l'ensemble d'entraînement :
 
 ```{r, eval=FALSE, echo=TRUE}
 train_mean <- mean(elec_train)
 train_sd <- sd(elec_train)
 ```
 
-From inspection, two weeks seems like a reasonable time period to learn from:
+D'après l'inspection, deux semaines semblent être une période raisonnable pour tirer des enseignements :
 
 ```{r, eval=FALSE, echo=TRUE}
 n_timesteps <- 7 * 2
@@ -1300,15 +1296,15 @@ valid_ds <- elec_dataset(elec_valid, n_timesteps)
 length(train_ds)
 ```
 
-Let's verify the `dataset` returns what we expect it to.
+Vérifions que le `dataset` renvoie ce que nous attendons de lui.
 
-`x`, at some arbitrary index, should be a matrix, with fourteen rows and a single column, where the column corresponds to the single feature, and the rows hold the consecutive measurements. `y`, on the other hand, should be a vector of length one.
+`x`, à un indice arbitraire, devrait être une matrice, avec quatorze lignes et une seule colonne, où la colonne correspond à la caractéristique unique, et les lignes contiennent les mesures consécutives. `y`, d'autre part, devrait être un vecteur de longueur un.
 
 ```{r, eval=FALSE, echo=TRUE}
 train_ds[1]
 ```
 
-#### Creating the respective `dataloader`s
+#### Création des `dataloader`s réspectifs
 
 ```{r, eval=FALSE, echo=TRUE}
 batch_size <- 32
@@ -1319,7 +1315,7 @@ valid_dl <- valid_ds %>% dataloader(batch_size = batch_size)
 
 ```
 
-While there is nothing new about the calls to `dataloader()` here, it is interesting to check the shape of the batches it returns.
+Bien qu'il n'y ait rien de nouveau dans les appels à `dataloader()`ici, il est intéressant de vérifier la forme des lots qu'il renvoie.
 
 ```{r, eval=FALSE, echo=TRUE}
 b <- dataloader_make_iter(train_dl) %>% dataloader_next()
@@ -1327,59 +1323,59 @@ b
 
 ```
 
-A batch of `x`s now has shape `(32, 14, 1)`. Since after batching, the batch items are found in the leftmost dimension, the consecutive time steps are now located in the second-from-the-left one.
+Un lot de `xs` a maintenant la forme (32, 14, 1). Étant donné qu'après le regroupement, les éléments du lot se trouvent dans la dimension la plus à gauche, les étapes temporelles consécutives sont maintenant situées dans la deuxième dimension à partir de la gauche.
 
-This will turn out to be important because of the shape of the inputs expected by RNNs.
+Cela s'avérera important en raison de la forme des entrées attendues par les RNN.
 
-### Model
+### Modèle
 
-The model is basically just a wrapper for an RNN, with an add-on linear layer that outputs a single prediction.
+Le modèle est essentiellement une enveloppe pour un RNN, avec une couche linéaire supplémentaire qui produit une prédiction unique.
 
-#### More about GRUs
+#### En savoir plus sur les GRU
 
-Before we look at the way the model makes use of the RNN (a GRU), let's inspect how a GRU behaves individually. We will want to know
+Avant d'examiner la manière dont le modèle utilise le RNN (un GRU), examinons comment un GRU se comporte individuellement. Nous voudrons savoir
 
--   what arguments it expects on instantiation;
+-   quels arguments il attend à l'instanciation ;
 
--   what arguments it expects when called; and
+-   les arguments qu'il attend lorsqu'il est appelé ; et
 
--   what it returns.
+-   ce qu'il retourne.
 
-Firstly, to create a GRU, we need to at least pass it the number of input features and the number of units in the hidden layer. If our data has batch items in its first dimension, we also need to pass `batch_first = TRUE`. For example:
+Tout d'abord, pour créer un GRU, nous devons au moins lui transmettre le nombre de caractéristiques d'entrée et le nombre d'unités dans la couche cachée. Si nos données ont des éléments de lot dans leur première dimension, nous devons également passer batch_first = TRUE. Par exemple :
 
 ```{r, eval=FALSE, echo=TRUE}
 gru <- nn_gru(
-  input_size = 1, # number of input features
-  hidden_size = 5, # number of hidden (and output!) features
+  input_size = 1, # nombre de caractéristiques d'entrée
+  hidden_size = 5, # nombre de caractéristiques cachées (et de sortie !)
   batch_first = TRUE 
 )
 ```
 
-Secondly, the expected input format (provided we've created the module "batch first", like we did above) is: `(batch_size, num_timesteps, num_features)`.
+Deuxièmement, le format d'entrée attendu (à condition que nous ayons créé le module "batch first", comme nous l'avons fait ci-dessus) est : `(batch_size, num_timesteps, num_features)`.
 
-Here's some random data fitting the requirements:
+Voici quelques données aléatoires qui répondent aux exigences :
 
 ```{r, eval=FALSE, echo=TRUE}
-# batch of 4, with 8 time steps each and a single feature
+# lot de 4, avec 8 pas de temps chacun et une seule caractéristique
 input <- torch_randn(c(4, 8, 1))
 ```
 
-Finally, the GRU module returns a list of two things:
+Enfin, le module GRU retourne une liste de deux choses :
 
--   the output, of shape `(batch_size, num_timesteps, num_hidden)` . (Again, presupposing "batch-first".)
+-   la sortie, de forme (`batch_size, num_timesteps, num_hidden`) . (Encore une fois, en présupposant "batch-first").
 
--   the final hidden state for the last time-step only, of shape `(1, batch_size, num_hidden)`.
+-   l'état caché final pour le dernier pas de temps seulement, de la forme (`1, batch_size, num_hidden`).
 
-For a GRU (as opposed to LSTM), there is *no difference between hidden and output when it comes to the final time-step*.Thus, the second tensor in the above list provides no additional information.
+Pour un GRU (par opposition à un LSTM), il n'y a pas de différence entre l'état caché et l'état de sortie quand il s'agit du dernier pas de temps, donc le deuxième tenseur dans la liste ci-dessus ne fournit aucune information supplémentaire.
 
 ```{r, eval=FALSE, echo=TRUE}
 gru(input)
 
 ```
 
-#### Complete prediction module
+#### Module de prédiction complet
 
-The model takes the output from the last time-step and passes it to the linear output layer, resulting in a single predicted value.
+Le modèle prend la sortie du dernier pas de temps et la transmet à la couche de sortie linéaire, ce qui donne une seule valeur prédite.
 
 ```{r, eval=FALSE, echo=TRUE}
 model <- nn_module(
@@ -1398,9 +1394,9 @@ model <- nn_module(
   
   forward = function(x) {
     
-    # list of [output, hidden]
-    # we are interested in the final timestep only, so we can directly use [[2]]
-    # but we want to remove the un-needed singleton dimension on the left
+    # liste de [output, hidden]
+    # nous ne sommes intéressés que par le dernier pas de temps, nous pouvons donc utiliser directement [[2]].
+    # mais nous voulons supprimer la dimension singleton inutile sur la gauche.
     x <- self$rnn(x)[[2]]$squeeze(1)
 
     x %>% self$output() 
@@ -1410,7 +1406,7 @@ model <- nn_module(
 
 ```
 
-### Training
+### Formation
 
 ```{r, eval=FALSE, echo=TRUE}
 fitted <- model %>%
@@ -1425,9 +1421,9 @@ fitted <- model %>%
   fit(train_dl, epochs = 20, valid_data = valid_dl, verbose = TRUE)
 ```
 
-### Test-time predictions
+### Prédictions en période de test
 
-For testing and plotting, let's use the first four months of the validation set. (Shortening the time window will make for a more useful plot.)
+Pour les tests et les graphiques, utilisons les quatre premiers mois de l'ensemble de validation. (En raccourcissant la fenêtre temporelle, on obtiendra un tracé plus utile).
 
 ```{r, eval=FALSE, echo=TRUE}
 vic_elec_test <- vic_elec_daily %>% 
@@ -1444,14 +1440,14 @@ test_dl <- test_ds %>% dataloader(batch_size = batch_size)
 
 ```
 
-Using `luz` to obtain the predictions:
+En utilisant `luz` pour obtenir les prédictions :
 
 ```{r, eval=FALSE, echo=TRUE}
 preds <- predict(fitted, test_dl)
 preds <- as.numeric(preds)
 ```
 
-We can plot them against the ground truth:
+On peut les comparer aux cibles :
 
 ```{r, eval=FALSE, echo=TRUE}
 preds <- c(rep(NA, n_timesteps), preds)
@@ -1471,33 +1467,33 @@ preds_ts %>%
 
 ```
 
-### Exercise: Extending the model to multi-step prediction
+### Exercice : Extension du modèle à la prévision à plusieurs étapes
 
-Often, we want to forecast further into the future than just a single time-step. In an extended exercise, you'll adapt `dataset` and model to enable multi-step-ahead prediction.
+Souvent, nous voulons prévoir plus loin dans le futur qu'une seule étape temporelle. Dans un exercice étendu, vous adapterez le `dataset` et le modèle pour permettre une prédiction à plusieurs étapes.
 
-#### Required changes
+#### Changements requis
 
 ##### `dataset`
 
-In the `dataset`, we now distinguish between the number of time-steps to base learning on (`n_timesteps`), and the number of time-steps to forecast (`n_forecast`).
+Dans le `dataset`, nous distinguons maintenant le nombre de pas de temps sur lequel baser l'apprentissage (`n_timesteps`), et le nombre de pas de temps à prévoir (`n_forecast`).
 
-In `.getitem()`, the tensor returned in `x` remains unchanged, while in `y`, we return `n_forecast` values immediately following the last `x` component.
+Dans `.getitem()`, le tenseur retourné en `x` reste inchangé, tandis qu'en `y`, nous retournons les valeurs `n_forecast` immédiatement après la dernière composante de `x`.
 
-Due to the new logic, `.length()` will have to change as well.
+En raison de la nouvelle logique, `.length()`devra également être modifié.
 
-##### Model
+##### Modèle
 
-The model now should output `n_forecast` values. The simplest way to achieve this is to have the final linear layer return `n_forecast` values instead of a single one. However, depending on the data this may or may not result in satisfying performance.
+Le modèle doit maintenant produire `n_forecast` values. Le moyen le plus simple d'y parvenir est de faire en sorte que la couche linéaire finale renvoie `n_forecast` valeurs prévisionnelles au lieu d'une seule. Cependant, en fonction des données, cela peut ou non donner des performances satisfaisantes.
 
-Instead, we can chain several linear layers, joined by nonlinearities. Put differently, we'll have a "network inside the network" -- the GRU will be followed by a feedforward neural network, also referred to as Multi-Layer Perceptron (MLP).
+Au lieu de cela, nous pouvons enchaîner plusieurs couches linéaires, reliées par des non-linéarités. Autrement dit, nous aurons un "réseau dans le réseau" - le GRU sera suivi d'un réseau à propagation directe, également appelé *perceptron multicouche* (*MLP*).
 
-In this second and significantly more powerful approach, it is easy to overfit to the training set. To counteract overfitting, we additionally put in a `dropout` layer. With *dropout*, a configurable amount of randomness is added to the training process (but neither to validation nor to testing). Technically, this is achieved by randomly zeroing out the desired fraction of elements in the layer's input tensor.
+Dans cette deuxième approche, nettement plus puissante, il est facile de s'adapter de manière excessive à l'ensemble de formation. Pour contrer l'adaptation excessive, nous ajoutons une couche *dropout*. Avec le dropout, une quantité configurable d'aléatoire est ajoutée durant la période d'entrâinement (mais pas durant celles de validation et de test). Techniquement, ceci est réalisé en mettant à zéro de manière aléatoire la fraction souhaitée d'éléments dans le tenseur d'entrée de la couche.
 
-Below, you'll find instructions to implement the second alternative.
+Vous trouverez ci-dessous des instructions pour mettre en œuvre la deuxième solution.
 
-#### Exercise part 1: Adapting the `dataset`
+#### Exercice partie 1 : Adaptation du `dataset`
 
-Please start by making the above-mentioned changes in the `dataset`.
+Commencez par effectuer les changements mentionnés ci-dessus dans le `dataset`.
 
 ```{r multi-step-ds, exercise=TRUE, exercise.eval=TRUE}
 elec_dataset <- dataset(
@@ -1551,7 +1547,7 @@ elec_dataset <- dataset(
 
 ```
 
-Once you've updated the `dataset` definition, you'll need to recreate `train_ds` and `valid_ds`. Pick a number for the forecast window (`n_forecast`), for example, fourteen days:
+Une fois que vous avez mis à jour la définition du `dataset`, vous devez recréer `train_ds` et `valid_ds`. Choisissez un nombre pour la fenêtre de prévision (`n_forecast`), par exemple quatorze jours :
 
 ```{r, eval=FALSE, echo=TRUE}
 n_timesteps <- 7 * 2
@@ -1562,16 +1558,16 @@ train_ds <- elec_dataset(elec_train, n_timesteps, n_forecast)
 valid_ds <- elec_dataset(elec_valid, n_timesteps, n_forecast)
 ```
 
-To check your implementation, make sure that
+Pour vérifier votre implémentation, assurez-vous que
 
 ```{r, eval=FALSE, echo=TRUE}
 length(train_ds)
 train_ds[1]
 ```
 
-work correctly.
+fonctionne correctement.
 
-To proceed to the next step, you'll also need to recreate the dataloaders.
+Pour passer à l'étape suivante, vous devez également recréer les `dataloader`s.
 
 ```{r, eval=FALSE, echo=TRUE}
 batch_size <- 32
@@ -1580,14 +1576,14 @@ train_dl <- train_ds %>% dataloader(batch_size = batch_size, shuffle = TRUE)
 valid_dl <- valid_ds %>% dataloader(batch_size = batch_size)
 ```
 
-#### Exercise part 2: Adapting the model
+#### Exercice partie 2 : Adaptation du modèle
 
-Now, adapt the model, in the sense described above.
+Maintenant, adaptez le modèle, dans le sens décrit ci-dessus.
 
 ```{r multi-step-model, exercise=TRUE, exercise.eval=TRUE}
 model <- nn_module(
   
-  # to avoid hard coding specific values, you can add more "hparams" here
+  # pour éviter de coder en dur des valeurs spécifiques, vous pouvez ajouter d'autres "hparams" ici
   initialize = function(input_size, hidden_size, ...) {
     
     self$rnn <- nn_gru(
@@ -1596,7 +1592,7 @@ model <- nn_module(
         batch_first = TRUE
       )
     
-    # a feedforward neural network, using nn_dropout before the output layer
+    # un perceptron multicouche, utilisant nn_dropout avant la couche de sortie
     self$mlp <- nn_sequential(
       
       
@@ -1648,9 +1644,9 @@ model <- nn_module(
 
 ```
 
-#### Exercise part 3: Run training
+#### Exercice partie 3 : Formation
 
-Training looks much like above, apart from the fact that you'll need to set more `hparams`.
+L'entraînement ressemble beaucoup à l'exercice précédent, à part le fait que vous devrez définir plus de `hparams`.
 
 ```{r multi-step-fit, exercise=TRUE, exercise.eval=TRUE}
 #fitted <-
@@ -1670,7 +1666,7 @@ fitted <- model %>%
   fit(train_dl, epochs = 20, valid_data = valid_dl, verbose = TRUE)
 ```
 
-Once you're done, here is some code to visualize a selection of forecast sequences (feel free to adapt).
+Une fois que vous avez terminé, voici un code pour visualiser une sélection de séquences de prévisions (n'hésitez pas à l'adapter).
 
 ```{r, eval=FALSE, echo=TRUE}
 preds <- predict(fitted, test_dl)
@@ -1711,16 +1707,16 @@ preds_ts %>%
 
 ```
 
-## Q&A
+## Questions et réponses
 
-Questions?
+Des questions ?
 
-Stay in contact:
+Restez en contact :
 
--   GitHub: [torch](https://github.com/torch), [luz](https://github.com/luz), ...
+-   GitHub : [torch](https://github.com/torch), [luz](https://github.com/luz), ...
 
--   Discord: [torch for R](https://discord.com/invite/s3D5cKhBkx)
+-   Discord : [torch for R](https://discord.com/invite/s3D5cKhBkx)
 
--   Blog: [RStudio AI Blog](https://blogs.rstudio.com/ai/)
+-   Blog : [RStudio AI Blog](https://blogs.rstudio.com/ai/)
 
-Thanks for your attention!!
+Merci de votre attention !
