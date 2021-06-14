@@ -30,7 +30,7 @@ Aujourd'hui, on va vous montrer comment faire de l'apprentissage automatique ave
 
 `torch` est implémenté en R et C++, tout en déléguant à LibTorch pour les opérations de plus bas niveau.
 
-![](torch_arch.png "torch architecture")
+![![](images/torch_arch.png)](torch_arch.png "torch architecture")
 
 ### `luz`
 
