@@ -26,7 +26,7 @@ Aujourd'hui, on va vous montrer comment faire de l'apprentissage automatique ave
 
 ### `torch`
 
-[`torch`](http:/torch.mlverse.org) torch est un cadre natif R pour le calcul rapide de tableaux avec différenciation automatique et de riches fonctionnalités de réseaux neuronaux.
+`torch` est un cadre natif R pour le calcul rapide de tableaux avec différenciation automatique et de riches fonctionnalités de réseaux neuronaux.
 
 `torch` est implémenté en R et C++, tout en déléguant à LibTorch pour les opérations de plus bas niveau.
 
@@ -68,7 +68,7 @@ Ce que `keras` est à `tensorflow` -- une API de haut niveau qui uniformise et i
 
 3.  Démarrer avec la prévision des séries temporelles avec `torch`.
 
-### Prerequisites
+### Prérequis
 
 Pour suivre ce tutoriel, vous devez installer les paquets suivants :
 
@@ -89,7 +89,7 @@ library(dplyr)
 
 ##### Méthode 1 : A partir des valeurs R
 
-Les tenseurs peuvent être créés directement à partir de valeurs R en utilisant torch_tensor(). En option, nous pouvons définir les attributs du tenseur, y compris le type de données, le dispositif sur lequel il vit, et plus encore.
+Les tenseurs peuvent être créés directement à partir de valeurs R en utilisant`torch_tensor().` En option, nous pouvons définir les attributs du tenseur, y compris le type de données, le dispositif sur lequel il vit, et plus encore.
 
 Ici, nous créons des tenseurs unidimensionnels (donc, des vecteurs) :
 
@@ -213,7 +213,7 @@ En fait, `$view()` ne crée pas réellement un tenseur nouveau ; au lieu de cela
 
 #### Indexation et découpage en tranches
 
-L'indexation dans `torch` est basée sur 1, tout comme en R en général. Et tout comme en R, les dimensions singleton seront abandonnées - sauf si vous spécifiez`drop = FALSE` :
+L'indexation dans `torch` est basée sur 1, tout comme en R en général. Et tout comme en R, les dimensions singleton seront abandonnées - sauf si vous spécifiez `drop = FALSE` :
 
 ```{r, eval=FALSE, echo=TRUE}
 t1
@@ -369,7 +369,7 @@ t1 <- t1$to(dtype = torch_float())
 (t1 - t1$mean()) / t1$std()
 ```
 
-Tout comme `torch_sum()`, `torch_mean()` et`torch_std()` ont besoin que leur entrée soit de type float.
+Tout comme `torch_sum()`, `torch_mean()` et `torch_std()` ont besoin que leur entrée soit de type `float`.
 
 ### Différenciation automatique avec autograd
 
@@ -521,11 +521,11 @@ for (i in 1:10) {
 
 ### Modules et optimiseurs
 
-Bien que tout puisse être fait avec les tenseurs et autograd seuls, coder un grand réseau neuronal de cette manière serait une tâche assez lourde. Heureusement, ce n'est pas nécessaire. D'une part, torch fournit un ensemble riche de modules de réseaux neuronaux qui cachent la logique des couches ; et d'autre part, ses optimiseurs encapsulent des algorithmes d'optimisation connus pour leur efficacité dans l'apprentissage profond.
+Bien que tout puisse être fait avec les tenseurs et autograd seuls, coder un grand réseau neuronal de cette manière serait une tâche assez lourde. Heureusement, ce n'est pas nécessaire. D'une part, `torch` fournit un ensemble riche de modules de réseaux neuronaux qui cachent la logique des couches ; et d'autre part, ses optimiseurs encapsulent des algorithmes d'optimisation connus pour leur efficacité dans l'apprentissage profond.
 
 #### Modules de réseaux neuronaux
 
-`torch` utilise le terme module pour les couches individuelles (par exemple, couche , couche convolutive ...) ainsi que pour les modèles, c'est-à-dire les réseaux neuronaux. La logique ici est que les modules sont composables ; un modèle/module n'est rien d'autre qu'une composition de modules plus petits, qui peuvent à nouveau contenir des modules encore plus petits, etc.
+`torch` utilise le terme module pour les couches individuelles (par exemple, couche linéaire, couche convolutive ...) ainsi que pour les modèles, c'est-à-dire les réseaux neuronaux. La logique ici est que les modules sont composables ; un modèle/module n'est rien d'autre qu'une composition de modules plus petits, qui peuvent à nouveau contenir des modules encore plus petits, etc.
 
 ##### Module linéaire
 
@@ -550,7 +550,7 @@ l <- nn_linear(in_features = 2, out_features = 1)
 l(x)
 ```
 
-Le résultat est différent de celui ci-dessus, parce que là nous avons défini le poids nous-mêmes. Par défaut, `torch` va initialiser les poids uniformément, avec des valeurs comprises entre`[-sqrt(num_features), sqrt(num_features)]`.
+Le résultat est différent de celui ci-dessus, parce que là nous avons défini le poids nous-mêmes. Par défaut, `torch` va initialiser les poids uniformément, avec des valeurs comprises entre `[-sqrt(num_features), sqrt(num_features)]`.
 
 ```{r, eval=FALSE, echo=TRUE}
 l$weight 
@@ -769,7 +769,7 @@ for (t in 1:200) {
 }
 ```
 
-Bien qu'elle soit beaucoup plus pratique que de travailler uniquement avec des tenseurs, cette méthode d'entraînement d'un réseau neuronal reste de très bas niveau et nécessite une attention particulière pour les particularités (comme la mise à zéro des gradients). Dans la deuxième partie, nous verrons comment former des réseaux neuronaux de manière beaucoup plus confortable avec `luz`.
+Bien qu'elle soit beaucoup plus pratique que de travailler uniquement avec des tenseurs, cette méthode d'entraînement d'un réseau neuronal reste de très bas niveau et nécessite beaucoup d'attention pour les particularités (comme la mise à zéro des gradients). Dans la deuxième partie, nous verrons comment former des réseaux neuronaux de manière beaucoup plus confortable avec `luz`.
 
 #### Exercice : Formation d'un réseau de neurones
 
