@@ -839,7 +839,7 @@ Avec `luz`, le flux global ressemble beaucoup à celui de Keras :
 
 2.  Vous utilisez `setup()`pour le configurer avec une fonction de perte, un optimiseur et un ensemble de métriques.
 
-3.  Vous l'entraînez en utilisant`fit(),` en passant les données d'entraînement et (facultativement) de validation, ainsi que le nombre d'époques à entraîner et un ensemble de rappels (tous deux facultatifs).
+3.  Vous l'entraînez en utilisant `fit(),` en passant les données d'entraînement et (facultativement) de validation, ainsi que le nombre d'époques à entraîner et un ensemble de rappels (tous deux facultatifs).
 
 ### Exemple de bout en bout : MNIST
 
@@ -909,7 +909,7 @@ length(valid_dl)
 
 Le modèle est un réseau neuronal convolutif qui filtre et réduit successivement ses entrées, pour arriver finalement à une prédiction de classe. Il y a dix types de chiffres (0-9), et pour chaque chiffre, il produira un score pour chacune des dix étiquettes possibles.
 
-Dans la définition du modèle, notez le paramètre num_classes. Dans cet exemple, il n'y a pas de réel besoin de paramétrer le nombre de classes avec lesquelles le modèle peut travailler ; cependant, nous aimerions montrer comment avec `luz`, vous pouvez garder la définition du modèle flexible et ne passer la configuration désirée qu'au moment de la formation.
+Dans la définition du modèle, notez le paramètre `num_classes`. Dans cet exemple, il n'y a pas de réel besoin de paramétrer le nombre de classes avec lesquelles le modèle peut travailler ; cependant, nous aimerions montrer comment avec `luz`, vous pouvez garder la définition du modèle flexible et ne passer la configuration désirée qu'au moment de la formation.
 
 ```{r, eval=FALSE, echo=TRUE}
 net <- nn_module(
@@ -945,7 +945,7 @@ Maintenant que nous avons la définition du modèle, tout ce qui nous sépare de
 
 -   En utilisant `setup()`, nous configurons la fonction de perte et l'optimiseur à utiliser ; de plus, nous pouvons demander le calcul d'un ensemble de métriques.
 
--   En appelant fit, nous démarrons le processus d'apprentissage. Le premier argument est toujours le `dataloader` contenant les données d'entraînement ; les autres arguments sont facultatifs et incluent le nombre d'époques, et éventuellement un autre `dataloader` pour la validation.
+-   En appelant `fit()`, nous démarrons le processus d'apprentissage. Le premier argument est toujours le `dataloader` contenant les données d'entraînement ; les autres arguments sont facultatifs et incluent le nombre d'époques, et éventuellement un autre `dataloader` pour la validation.
 
 Alors que `setup()` et `fit()` sont "obligatoires", `set_hparams()`, située entre les deux, ne l'est pas. Cette fonction peut être utilisée pour définir les variables utilisées dans le modèle ; ici, nous passons la valeur souhaitée pour le paramètre `num_classes` mentionné ci-dessus.
 
@@ -992,7 +992,7 @@ copy <- luz_load("mnist-cnn.pt")
 
 Les rappels offrent un moyen extrêmement flexible de personnaliser la routine d'entraînement. `luz` lui-même utilise des rappels en interne, par exemple pour calculer les métriques ou pour afficher la progression de l'entraînement.
 
-Voici une rappel simple qui devient active à deux catégories de "temps" spécifiées :
+Voici un rappel simple qui devient active à deux catégories de "temps" spécifiées :
 
 1.  Lorsque l'entraînement est terminé pour un seul lot (`on_train_batch_end()`).
 
@@ -1198,13 +1198,13 @@ Avant de créer un `dataset`, un `dataloader` et un modèle, parlons rapidement 
 
 ### La prévision des séries chronologiques avec l'apprentissage profond en bref
 
-Dans un modèle linéaire, les observations individuelles sont indépendantes. Leur ordre n'a pas d'importance. Il en va de même pour les ensembles d'images (pas les pixels d'une image, cependant).
+Dans un modèle linéaire, les observations individuelles sont indépendantes. Leur ordre n'a pas d'importance. Il en va de même pour les ensembles d'images (pas les pixels d'un image, cependant).
 
 Mais avec les séquences, comme le langage parlé ou les mesures consécutives dans le temps, l'ordre est essentiel. Nous avons donc besoin de modèles de réseaux neuronaux qui respectent la séquentialité.
 
 Traditionnellement, le type de données dont nous parlons est le domaine des réseaux neuronaux récurrents (RNN). Ils sont dits récurrents car, en plus de traiter un nouvel élément de lot à chaque pas de temps (d'entrâinement), ils conservent - et mettent à jour en permanence - un état interne. Cet état est souvent appelé l'état caché.
 
-Dans cette famille de RNN, les architectures de modèle les plus établies sont l'unité récurrente à grille (GRU) et la mémoire à long terme (LSTM). La LSTM diffère de la GRU en ce qu'elle conserve un état interne supplémentaire, parfois appelé état de cellule, qui lui permet de se souvenir à plus long terme. Dans ce tutoriel, nous utilisons uniquement les GRU, mais l'adaptation du code pour les LSTM est un effort gérable.
+Dans cette famille des RNN, les architectures les plus établies sont l'unité récurrente à grille (GRU) et la mémoire à long terme (LSTM). La LSTM diffère de la GRU en ce qu'elle conserve un état interne supplémentaire, parfois appelé état de cellule, qui lui permet de se souvenir à plus long terme. Dans ce tutoriel, nous utilisons uniquement les GRU, mais l'adaptation du code pour les LSTM est un effort gérable.
 
 Pour que les RNN puissent apprendre les dépendances temporelles, les données doivent être préparées de manière à ce que chaque élément du lot contienne des informations sur plusieurs étapes temporelles. Voyons comment cela fonctionne.
 
@@ -1220,7 +1220,7 @@ Les `dataset` sont des objets R6 qui implémentent trois méthodes : `initialize
 
 -   `.length()` indique à l'appelant (un `dataloader`, en général) combien d'éléments il y a dans le `dataset`; et
 
--   `.getitem()` définit ce qui doit être renvoyé sous la forme d'une seule paire \<source, cible\> (c'est-à-dire `(x,y)` ).The last one of these is where the "business logic" surfaces.
+-   `.getitem()` définit ce qui doit être renvoyé sous la forme d'une seule paire \<source, cible\> (c'est-à-dire `(x,y)` ). Le dernier de ces éléments est celui où la "logique commerciale" fait surface.
 
 #### Un `dataset` de séries temporelles pour la prédiction à un pas d'avance
 
@@ -1261,7 +1261,7 @@ elec_dataset <- dataset(
 )
 ```
 
-Maintenant, nous créons des instances d'un tel `dataset` pour la formation et la validation. Nous devons d'abord extraire la caractéristique de la demande à partir du tsibble :
+Maintenant, nous créons des instances d'un tel `dataset` pour la formation et la validation. Nous devons d'abord extraire la caractéristique de la demande à partir du `tsibble` :
 
 ```{r, eval=FALSE, echo=TRUE}
 elec_train <- vic_elec_daily %>% 
@@ -1315,7 +1315,7 @@ valid_dl <- valid_ds %>% dataloader(batch_size = batch_size)
 
 ```
 
-Bien qu'il n'y ait rien de nouveau dans les appels à `dataloader()`ici, il est intéressant de vérifier la forme des lots qu'il renvoie.
+Bien qu'il n'y ait rien de nouveau dans les appels à `dataloader()` ici, il est intéressant de vérifier la forme des lots qu'il renvoie.
 
 ```{r, eval=FALSE, echo=TRUE}
 b <- dataloader_make_iter(train_dl) %>% dataloader_next()
@@ -1341,7 +1341,7 @@ Avant d'examiner la manière dont le modèle utilise le RNN (un GRU), examinons 
 
 -   ce qu'il retourne.
 
-Tout d'abord, pour créer un GRU, nous devons au moins lui transmettre le nombre de caractéristiques d'entrée et le nombre d'unités dans la couche cachée. Si nos données ont des éléments de lot dans leur première dimension, nous devons également passer batch_first = TRUE. Par exemple :
+Tout d'abord, pour créer un GRU, nous devons au moins lui transmettre le nombre de caractéristiques d'entrée et le nombre d'unités dans la couche cachée. Si nos données ont des éléments de lot dans leur première dimension, nous devons également passer `batch_first = TRUE`. Par exemple :
 
 ```{r, eval=FALSE, echo=TRUE}
 gru <- nn_gru(
