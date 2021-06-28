@@ -30,7 +30,7 @@ Aujourd'hui, on va vous montrer comment faire de l'apprentissage automatique ave
 
 `torch` est implémenté en R et C++, tout en déléguant à LibTorch pour les opérations de plus bas niveau.
 
-![![](images/torch_arch.png)](torch_arch.png "torch architecture")
+![![torch architecture](images/torch_arch.png "torch architecture")](torch_arch.png "torch architecture")
 
 ### `luz`
 
@@ -73,12 +73,17 @@ Ce que `keras` est à `tensorflow` -- une API de haut niveau qui uniformise et i
 Pour suivre ce tutoriel, vous devez installer les paquets suivants :
 
 ```{r}
+library(learnr)
 library(torch)
 library(luz)
 library(torchvision)
-
-library(learnr)
-library(dplyr)
+library(tidyverse)
+library(tsibble)
+library(tsibbledata)
+library(lubridate)
+library(fable)
+library(feasts)
+library(zeallot)
 ```
 
 ## `torch` tenseurs, modules, and autograd
@@ -89,7 +94,7 @@ library(dplyr)
 
 ##### Méthode 1 : A partir des valeurs R
 
-Les tenseurs peuvent être créés directement à partir de valeurs R en utilisant`torch_tensor().` En option, nous pouvons définir les attributs du tenseur, y compris le type de données, le dispositif sur lequel il vit, et plus encore.
+Les tenseurs peuvent être créés directement à partir de valeurs R en utilisant `torch_tensor().` En option, nous pouvons définir les attributs du tenseur, y compris le type de données, le dispositif sur lequel il vit, et plus encore.
 
 Ici, nous créons des tenseurs unidimensionnels (donc, des vecteurs) :
 
