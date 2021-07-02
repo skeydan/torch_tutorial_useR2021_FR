@@ -72,7 +72,7 @@ Ce que `keras` est à `tensorflow` -- une API de haut niveau qui uniformise et i
 
 Pour suivre ce tutoriel, vous devez installer les paquets suivants :
 
-```{r}
+```{r, eval=FALSE, echo=TRUE}
 library(learnr)
 library(torch)
 library(luz)
@@ -179,7 +179,7 @@ Voici quelques-unes des nombreuses opérations matricielles disponibles. `$mul()
 ```{r, eval=FALSE, echo=TRUE}
 t1$mul(t2)
 
-# fonctionnent tous les deux(en torch, il n'ya pas de concept de vecteur ligne vs colonne)
+# fonctionnent tous les deux(en torch, il n'y a pas de concept de vecteur ligne vs colonne)
 t1$matmul(t2)
 t1$t()$matmul(t2)
 
@@ -326,7 +326,7 @@ t1
 t2
 ```
 
-2.  Multipliez les matrices, faites la somme de tous les éléments et prenez la racine carrée :
+2.  Multipliez les matrices, mettez tous éléments en carré, faites leur somme, et prenez la racine carrée :
 
 ```{r tensors2, exercise=TRUE, exercise.eval=TRUE}
 (m1 %*% m2)^2 %>% sum() %>% sqrt()
@@ -338,7 +338,7 @@ t1$matmul(t2)$square()$sum()$to(dtype = torch_float())$sqrt()
 
 [Notez comment nous avons besoin de convertir en flottant afin d'être en mesure d'appeler `torch_sqrt()`.]
 
-3.  Multiplier chaque ligne de `m1` par le vecteur `m2` (par éléments) :
+3.  Multipliez chaque ligne de `m1` par le vecteur `m2` (par éléments) :
 
 ```{r tensors3, exercise=TRUE, exercise.eval=TRUE}
 m1 * rbind(t(m2), t(m2), t(m2), t(m2))
@@ -1488,7 +1488,7 @@ En raison de la nouvelle logique, `.length()`devra également être modifié.
 
 ##### Modèle
 
-Le modèle doit maintenant produire `n_forecast` values. Le moyen le plus simple d'y parvenir est de faire en sorte que la couche linéaire finale renvoie `n_forecast` valeurs prévisionnelles au lieu d'une seule. Cependant, en fonction des données, cela peut ou non donner des performances satisfaisantes.
+Le modèle doit maintenant produire `n_forecast` valeurs. Le moyen le plus simple d'y parvenir est de faire en sorte que la couche linéaire finale renvoie `n_forecast` valeurs prévisionnelles au lieu d'une seule. Cependant, en fonction des données, cela peut ou non donner des performances satisfaisantes.
 
 Au lieu de cela, nous pouvons enchaîner plusieurs couches linéaires, reliées par des non-linéarités. Autrement dit, nous aurons un "réseau dans le réseau" - le GRU sera suivi d'un réseau à propagation directe, également appelé *perceptron multicouche* (*MLP*).
 

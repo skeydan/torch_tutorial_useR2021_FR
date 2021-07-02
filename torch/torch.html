@@ -121,11 +121,11 @@ $(document).ready(function () {
 <p>Aujourd’hui, on va vous montrer comment faire de l’apprentissage automatique avec <code>torch</code> et son API de haut niveau, <code>luz</code>.</p>
 <div id="section-torch" class="section level3">
 <h3><code>torch</code></h3>
-<p><a href="http:/torch.mlverse.org"><code>torch</code></a> torch est un cadre natif R pour le calcul rapide de tableaux avec différenciation automatique et de riches fonctionnalités de réseaux neuronaux.</p>
+<p><code>torch</code> est un cadre natif R pour le calcul rapide de tableaux avec différenciation automatique et de riches fonctionnalités de réseaux neuronaux.</p>
 <p><code>torch</code> est implémenté en R et C++, tout en déléguant à LibTorch pour les opérations de plus bas niveau.</p>
 <div class="figure">
 <img src="torch_arch.png" title="torch architecture" alt="" />
-<p class="caption"><img src="images/torch_arch.png" /></p>
+<p class="caption"><img src="images/torch_arch.png" title="torch architecture" alt="torch architecture" /></p>
 </div>
 </div>
 <div id="section-luz" class="section level3">
@@ -158,9 +158,20 @@ $(document).ready(function () {
 <li><p>Démarrer avec la prévision des séries temporelles avec <code>torch</code>.</p></li>
 </ol>
 </div>
-<div id="section-prerequisites" class="section level3">
-<h3>Prerequisites</h3>
+<div id="section-prérequis" class="section level3">
+<h3>Prérequis</h3>
 <p>Pour suivre ce tutoriel, vous devez installer les paquets suivants :</p>
+<pre class="r"><code>library(learnr)
+library(torch)
+library(luz)
+library(torchvision)
+library(tidyverse)
+library(tsibble)
+library(tsibbledata)
+library(lubridate)
+library(fable)
+library(feasts)
+library(zeallot)</code></pre>
 </div>
 </div>
 <div id="section-torch-tenseurs-modules-and-autograd" class="section level2">
@@ -171,7 +182,7 @@ $(document).ready(function () {
 <h4>Créer des tenseurs</h4>
 <div id="section-méthode-1-a-partir-des-valeurs-r" class="section level5">
 <h5>Méthode 1 : A partir des valeurs R</h5>
-<p>Les tenseurs peuvent être créés directement à partir de valeurs R en utilisant torch_tensor(). En option, nous pouvons définir les attributs du tenseur, y compris le type de données, le dispositif sur lequel il vit, et plus encore.</p>
+<p>Les tenseurs peuvent être créés directement à partir de valeurs R en utilisant <code>torch_tensor().</code> En option, nous pouvons définir les attributs du tenseur, y compris le type de données, le dispositif sur lequel il vit, et plus encore.</p>
 <p>Ici, nous créons des tenseurs unidimensionnels (donc, des vecteurs) :</p>
 <pre class="r"><code>torch_tensor(1)
 torch_tensor(1, dtype = torch_int())
@@ -223,7 +234,7 @@ t1</code></pre>
 <p>Voici quelques-unes des nombreuses opérations matricielles disponibles. <code>$mul()</code> effectue une multiplication par éléments ; <code>$matmul()</code> effectue une multiplication matricielle ; <code>$dot()</code> calcule le produit scalaire :</p>
 <pre class="r"><code>t1$mul(t2)
 
-# fonctionnent tous les deux(en torch, il n&#39;ya pas de concept de vecteur ligne vs colonne)
+# fonctionnent tous les deux(en torch, il n&#39;y a pas de concept de vecteur ligne vs colonne)
 t1$matmul(t2)
 t1$t()$matmul(t2)
 
@@ -247,7 +258,7 @@ t3 &lt;- t1$view(24)</code></pre>
 </div>
 <div id="section-indexation-et-découpage-en-tranches" class="section level4">
 <h4>Indexation et découpage en tranches</h4>
-<p>L’indexation dans <code>torch</code> est basée sur 1, tout comme en R en général. Et tout comme en R, les dimensions singleton seront abandonnées - sauf si vous spécifiez<code>drop = FALSE</code> :</p>
+<p>L’indexation dans <code>torch</code> est basée sur 1, tout comme en R en général. Et tout comme en R, les dimensions singleton seront abandonnées - sauf si vous spécifiez <code>drop = FALSE</code> :</p>
 <pre class="r"><code>t1
 
 t1[ , 1, , ]
@@ -348,7 +359,7 @@ t1
 t2</code></pre>
 </div>
 <ol start="2" style="list-style-type: decimal">
-<li>Multipliez les matrices, faites la somme de tous les éléments et prenez la racine carrée :</li>
+<li>Multipliez les matrices, mettez tous éléments en carré, faites leur somme, et prenez la racine carrée :</li>
 </ol>
 <div class="tutorial-exercise" data-label="tensors2" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>(m1 %*% m2)^2 %&gt;% sum() %&gt;% sqrt()</code></pre>
@@ -360,7 +371,7 @@ t2</code></pre>
 </div>
 <p>[Notez comment nous avons besoin de convertir en flottant afin d’être en mesure d’appeler <code>torch_sqrt()</code>.]</p>
 <ol start="3" style="list-style-type: decimal">
-<li>Multiplier chaque ligne de <code>m1</code> par le vecteur <code>m2</code> (par éléments) :</li>
+<li>Multipliez chaque ligne de <code>m1</code> par le vecteur <code>m2</code> (par éléments) :</li>
 </ol>
 <div class="tutorial-exercise" data-label="tensors3" data-caption="Code" data-completion="1" data-diagnostics="1" data-startover="1" data-lines="0">
 <pre class="text"><code>m1 * rbind(t(m2), t(m2), t(m2), t(m2))</code></pre>
@@ -408,7 +419,7 @@ t2</code></pre>
 <pre class="text"><code>t1 &lt;- t1$to(dtype = torch_float())
 (t1 - t1$mean()) / t1$std()</code></pre>
 </div>
-<p>Tout comme <code>torch_sum()</code>, <code>torch_mean()</code> et<code>torch_std()</code> ont besoin que leur entrée soit de type float.</p>
+<p>Tout comme <code>torch_sum()</code>, <code>torch_mean()</code> et <code>torch_std()</code> ont besoin que leur entrée soit de type <code>float</code>.</p>
 </div>
 </div>
 <div id="section-différenciation-automatique-avec-autograd" class="section level3">
@@ -569,10 +580,10 @@ for (i in 1:10) {
 </div>
 <div id="section-modules-et-optimiseurs" class="section level3">
 <h3>Modules et optimiseurs</h3>
-<p>Bien que tout puisse être fait avec les tenseurs et autograd seuls, coder un grand réseau neuronal de cette manière serait une tâche assez lourde. Heureusement, ce n’est pas nécessaire. D’une part, torch fournit un ensemble riche de modules de réseaux neuronaux qui cachent la logique des couches ; et d’autre part, ses optimiseurs encapsulent des algorithmes d’optimisation connus pour leur efficacité dans l’apprentissage profond.</p>
+<p>Bien que tout puisse être fait avec les tenseurs et autograd seuls, coder un grand réseau neuronal de cette manière serait une tâche assez lourde. Heureusement, ce n’est pas nécessaire. D’une part, <code>torch</code> fournit un ensemble riche de modules de réseaux neuronaux qui cachent la logique des couches ; et d’autre part, ses optimiseurs encapsulent des algorithmes d’optimisation connus pour leur efficacité dans l’apprentissage profond.</p>
 <div id="section-modules-de-réseaux-neuronaux" class="section level4">
 <h4>Modules de réseaux neuronaux</h4>
-<p><code>torch</code> utilise le terme module pour les couches individuelles (par exemple, couche , couche convolutive …) ainsi que pour les modèles, c’est-à-dire les réseaux neuronaux. La logique ici est que les modules sont composables ; un modèle/module n’est rien d’autre qu’une composition de modules plus petits, qui peuvent à nouveau contenir des modules encore plus petits, etc.</p>
+<p><code>torch</code> utilise le terme module pour les couches individuelles (par exemple, couche linéaire, couche convolutive …) ainsi que pour les modèles, c’est-à-dire les réseaux neuronaux. La logique ici est que les modules sont composables ; un modèle/module n’est rien d’autre qu’une composition de modules plus petits, qui peuvent à nouveau contenir des modules encore plus petits, etc.</p>
 <div id="section-module-linéaire" class="section level5">
 <h5>Module linéaire</h5>
 <p>Voici une transformation affine, codée manuellement :</p>
@@ -588,7 +599,7 @@ x$matmul(w) + b  </code></pre>
 <p>Nous pouvons réaliser la même chose en utilisant un module linéaire :</p>
 <pre class="r"><code>l &lt;- nn_linear(in_features = 2, out_features = 1)
 l(x)</code></pre>
-<p>Le résultat est différent de celui ci-dessus, parce que là nous avons défini le poids nous-mêmes. Par défaut, <code>torch</code> va initialiser les poids uniformément, avec des valeurs comprises entre<code>[-sqrt(num_features), sqrt(num_features)]</code>.</p>
+<p>Le résultat est différent de celui ci-dessus, parce que là nous avons défini le poids nous-mêmes. Par défaut, <code>torch</code> va initialiser les poids uniformément, avec des valeurs comprises entre <code>[-sqrt(num_features), sqrt(num_features)]</code>.</p>
 <pre class="r"><code>l$weight </code></pre>
 <p>Juste pour prouver le point, nous pouvons initialiser manuellement les poids du module:</p>
 <pre class="r"><code>nn_init_constant_(l$weight, 0.1)
@@ -719,7 +730,7 @@ optimizer &lt;- optim_adam(model$parameters, lr = learning_rate)</code></pre>
   # mettre à jour les poids 
   optimizer$step()
 }</code></pre>
-<p>Bien qu’elle soit beaucoup plus pratique que de travailler uniquement avec des tenseurs, cette méthode d’entraînement d’un réseau neuronal reste de très bas niveau et nécessite une attention particulière pour les particularités (comme la mise à zéro des gradients). Dans la deuxième partie, nous verrons comment former des réseaux neuronaux de manière beaucoup plus confortable avec <code>luz</code>.</p>
+<p>Bien qu’elle soit beaucoup plus pratique que de travailler uniquement avec des tenseurs, cette méthode d’entraînement d’un réseau neuronal reste de très bas niveau et nécessite beaucoup d’attention pour les particularités (comme la mise à zéro des gradients). Dans la deuxième partie, nous verrons comment former des réseaux neuronaux de manière beaucoup plus confortable avec <code>luz</code>.</p>
 </div>
 <div id="section-exercice-formation-dun-réseau-de-neurones" class="section level4">
 <h4>Exercice : Formation d’un réseau de neurones</h4>
@@ -774,26 +785,26 @@ for (t in 1:200) {
   # mettre à jour les poids 
   optimizer$step()
 }</code></pre>
-<pre><code>Epoch :  10    Loss :  111.8518 
-Epoch :  20    Loss :  100.0569 
-Epoch :  30    Loss :  89.02506 
-Epoch :  40    Loss :  77.87939 
-Epoch :  50    Loss :  68.5024 
-Epoch :  60    Loss :  60.12441 
-Epoch :  70    Loss :  54.11732 
-Epoch :  80    Loss :  50.70421 
-Epoch :  90    Loss :  47.39006 
-Epoch :  100    Loss :  44.52914 
-Epoch :  110    Loss :  41.70057 
-Epoch :  120    Loss :  40.00521 
-Epoch :  130    Loss :  38.26446 
-Epoch :  140    Loss :  36.11102 
-Epoch :  150    Loss :  34.75252 
-Epoch :  160    Loss :  32.20155 
-Epoch :  170    Loss :  35.44614 
-Epoch :  180    Loss :  32.34827 
-Epoch :  190    Loss :  30.15497 
-Epoch :  200    Loss :  28.59554 </code></pre>
+<pre><code>Epoch :  10    Loss :  123.572 
+Epoch :  20    Loss :  100.9666 
+Epoch :  30    Loss :  91.39769 
+Epoch :  40    Loss :  79.41434 
+Epoch :  50    Loss :  69.04246 
+Epoch :  60    Loss :  63.74337 
+Epoch :  70    Loss :  59.27409 
+Epoch :  80    Loss :  54.52274 
+Epoch :  90    Loss :  52.62548 
+Epoch :  100    Loss :  51.37317 
+Epoch :  110    Loss :  46.44276 
+Epoch :  120    Loss :  44.42223 
+Epoch :  130    Loss :  43.16488 
+Epoch :  140    Loss :  53.86612 
+Epoch :  150    Loss :  44.68726 
+Epoch :  160    Loss :  41.13201 
+Epoch :  170    Loss :  40.62918 
+Epoch :  180    Loss :  40.13367 
+Epoch :  190    Loss :  39.47061 
+Epoch :  200    Loss :  38.67025 </code></pre>
 <script type="application/json" data-opts-chunk="1">{"fig.width":6.5,"fig.height":4,"fig.retina":2,"fig.align":"default","fig.keep":"high","fig.show":"asis","out.width":624,"warning":true,"error":false,"message":true,"exercise.df_print":"paged","exercise.checker":"NULL"}</script>
 </div>
 </div>
@@ -806,7 +817,7 @@ Epoch :  200    Loss :  28.59554 </code></pre>
 <ol style="list-style-type: decimal">
 <li><p>Vous définissez un modèle.</p></li>
 <li><p>Vous utilisez <code>setup()</code>pour le configurer avec une fonction de perte, un optimiseur et un ensemble de métriques.</p></li>
-<li><p>Vous l’entraînez en utilisant<code>fit(),</code> en passant les données d’entraînement et (facultativement) de validation, ainsi que le nombre d’époques à entraîner et un ensemble de rappels (tous deux facultatifs).</p></li>
+<li><p>Vous l’entraînez en utilisant <code>fit(),</code> en passant les données d’entraînement et (facultativement) de validation, ainsi que le nombre d’époques à entraîner et un ensemble de rappels (tous deux facultatifs).</p></li>
 </ol>
 <div id="section-exemple-de-bout-en-bout-mnist" class="section level3">
 <h3>Exemple de bout en bout : MNIST</h3>
@@ -848,7 +859,7 @@ length(valid_dl)</code></pre>
 <div id="section-modèle" class="section level4">
 <h4>Modèle</h4>
 <p>Le modèle est un réseau neuronal convolutif qui filtre et réduit successivement ses entrées, pour arriver finalement à une prédiction de classe. Il y a dix types de chiffres (0-9), et pour chaque chiffre, il produira un score pour chacune des dix étiquettes possibles.</p>
-<p>Dans la définition du modèle, notez le paramètre num_classes. Dans cet exemple, il n’y a pas de réel besoin de paramétrer le nombre de classes avec lesquelles le modèle peut travailler ; cependant, nous aimerions montrer comment avec <code>luz</code>, vous pouvez garder la définition du modèle flexible et ne passer la configuration désirée qu’au moment de la formation.</p>
+<p>Dans la définition du modèle, notez le paramètre <code>num_classes</code>. Dans cet exemple, il n’y a pas de réel besoin de paramétrer le nombre de classes avec lesquelles le modèle peut travailler ; cependant, nous aimerions montrer comment avec <code>luz</code>, vous pouvez garder la définition du modèle flexible et ne passer la configuration désirée qu’au moment de la formation.</p>
 <pre class="r"><code>net &lt;- nn_module(
   &quot;Net&quot;,
   initialize = function(num_classes) {
@@ -880,7 +891,7 @@ length(valid_dl)</code></pre>
 <p>Maintenant que nous avons la définition du modèle, tout ce qui nous sépare de l’observation de son entraînement sont deux appels à <code>luz</code> : <code>setup()</code> et <code>fit()</code>.</p>
 <ul>
 <li><p>En utilisant <code>setup()</code>, nous configurons la fonction de perte et l’optimiseur à utiliser ; de plus, nous pouvons demander le calcul d’un ensemble de métriques.</p></li>
-<li><p>En appelant fit, nous démarrons le processus d’apprentissage. Le premier argument est toujours le <code>dataloader</code> contenant les données d’entraînement ; les autres arguments sont facultatifs et incluent le nombre d’époques, et éventuellement un autre <code>dataloader</code> pour la validation.</p></li>
+<li><p>En appelant <code>fit()</code>, nous démarrons le processus d’apprentissage. Le premier argument est toujours le <code>dataloader</code> contenant les données d’entraînement ; les autres arguments sont facultatifs et incluent le nombre d’époques, et éventuellement un autre <code>dataloader</code> pour la validation.</p></li>
 </ul>
 <p>Alors que <code>setup()</code> et <code>fit()</code> sont “obligatoires”, <code>set_hparams()</code>, située entre les deux, ne l’est pas. Cette fonction peut être utilisée pour définir les variables utilisées dans le modèle ; ici, nous passons la valeur souhaitée pour le paramètre <code>num_classes</code> mentionné ci-dessus.</p>
 <pre class="r"><code>fitted &lt;- net %&gt;%
@@ -913,7 +924,7 @@ copy &lt;- luz_load(&quot;mnist-cnn.pt&quot;)</code></pre>
 <div id="section-exercice-rappels" class="section level3">
 <h3>Exercice : Rappels</h3>
 <p>Les rappels offrent un moyen extrêmement flexible de personnaliser la routine d’entraînement. <code>luz</code> lui-même utilise des rappels en interne, par exemple pour calculer les métriques ou pour afficher la progression de l’entraînement.</p>
-<p>Voici une rappel simple qui devient active à deux catégories de “temps” spécifiées :</p>
+<p>Voici un rappel simple qui devient active à deux catégories de “temps” spécifiées :</p>
 <ol style="list-style-type: decimal">
 <li><p>Lorsque l’entraînement est terminé pour un seul lot (<code>on_train_batch_end()</code>).</p></li>
 <li><p>Quand l’entraînement a terminé une époque complète (<code>on_epoch_end()</code>).</p></li>
@@ -1088,10 +1099,10 @@ cmp %&gt;% autoplot()</code></pre>
 <p>Avant de créer un <code>dataset</code>, un <code>dataloader</code> et un modèle, parlons rapidement de la prédiction de séries temporelles avec l’apprentissage profond en général.</p>
 <div id="section-la-prévision-des-séries-chronologiques-avec-lapprentissage-profond-en-bref" class="section level3">
 <h3>La prévision des séries chronologiques avec l’apprentissage profond en bref</h3>
-<p>Dans un modèle linéaire, les observations individuelles sont indépendantes. Leur ordre n’a pas d’importance. Il en va de même pour les ensembles d’images (pas les pixels d’une image, cependant).</p>
+<p>Dans un modèle linéaire, les observations individuelles sont indépendantes. Leur ordre n’a pas d’importance. Il en va de même pour les ensembles d’images (pas les pixels d’un image, cependant).</p>
 <p>Mais avec les séquences, comme le langage parlé ou les mesures consécutives dans le temps, l’ordre est essentiel. Nous avons donc besoin de modèles de réseaux neuronaux qui respectent la séquentialité.</p>
 <p>Traditionnellement, le type de données dont nous parlons est le domaine des réseaux neuronaux récurrents (RNN). Ils sont dits récurrents car, en plus de traiter un nouvel élément de lot à chaque pas de temps (d’entrâinement), ils conservent - et mettent à jour en permanence - un état interne. Cet état est souvent appelé l’état caché.</p>
-<p>Dans cette famille de RNN, les architectures de modèle les plus établies sont l’unité récurrente à grille (GRU) et la mémoire à long terme (LSTM). La LSTM diffère de la GRU en ce qu’elle conserve un état interne supplémentaire, parfois appelé état de cellule, qui lui permet de se souvenir à plus long terme. Dans ce tutoriel, nous utilisons uniquement les GRU, mais l’adaptation du code pour les LSTM est un effort gérable.</p>
+<p>Dans cette famille des RNN, les architectures les plus établies sont l’unité récurrente à grille (GRU) et la mémoire à long terme (LSTM). La LSTM diffère de la GRU en ce qu’elle conserve un état interne supplémentaire, parfois appelé état de cellule, qui lui permet de se souvenir à plus long terme. Dans ce tutoriel, nous utilisons uniquement les GRU, mais l’adaptation du code pour les LSTM est un effort gérable.</p>
 <p>Pour que les RNN puissent apprendre les dépendances temporelles, les données doivent être préparées de manière à ce que chaque élément du lot contienne des informations sur plusieurs étapes temporelles. Voyons comment cela fonctionne.</p>
 </div>
 <div id="section-création-dun-dataset-pour-la-prévision-de-séries-temporelles" class="section level3">
@@ -1103,7 +1114,7 @@ cmp %&gt;% autoplot()</code></pre>
 <ul>
 <li><p><code>initialize()</code>est l’endroit où les données sont stockées dans des variables d’instance (et éventuellement, prétraitées) ;</p></li>
 <li><p><code>.length()</code> indique à l’appelant (un <code>dataloader</code>, en général) combien d’éléments il y a dans le <code>dataset</code>; et</p></li>
-<li><p><code>.getitem()</code> définit ce qui doit être renvoyé sous la forme d’une seule paire &lt;source, cible&gt; (c’est-à-dire <code>(x,y)</code> ).The last one of these is where the “business logic” surfaces.</p></li>
+<li><p><code>.getitem()</code> définit ce qui doit être renvoyé sous la forme d’une seule paire &lt;source, cible&gt; (c’est-à-dire <code>(x,y)</code> ). Le dernier de ces éléments est celui où la “logique commerciale” fait surface.</p></li>
 </ul>
 </div>
 <div id="section-un-dataset-de-séries-temporelles-pour-la-prédiction-à-un-pas-davance" class="section level4">
@@ -1138,7 +1149,7 @@ cmp %&gt;% autoplot()</code></pre>
     length(self$x) - self$n_timesteps
   }
 )</code></pre>
-<p>Maintenant, nous créons des instances d’un tel <code>dataset</code> pour la formation et la validation. Nous devons d’abord extraire la caractéristique de la demande à partir du tsibble :</p>
+<p>Maintenant, nous créons des instances d’un tel <code>dataset</code> pour la formation et la validation. Nous devons d’abord extraire la caractéristique de la demande à partir du <code>tsibble</code> :</p>
 <pre class="r"><code>elec_train &lt;- vic_elec_daily %&gt;% 
   filter(year(Date) %in% c(2012, 2013)) %&gt;%
   as_tibble() %&gt;%
@@ -1171,7 +1182,7 @@ length(train_ds)</code></pre>
 train_dl &lt;- train_ds %&gt;% dataloader(batch_size = batch_size, shuffle = TRUE)
 
 valid_dl &lt;- valid_ds %&gt;% dataloader(batch_size = batch_size)</code></pre>
-<p>Bien qu’il n’y ait rien de nouveau dans les appels à <code>dataloader()</code>ici, il est intéressant de vérifier la forme des lots qu’il renvoie.</p>
+<p>Bien qu’il n’y ait rien de nouveau dans les appels à <code>dataloader()</code> ici, il est intéressant de vérifier la forme des lots qu’il renvoie.</p>
 <pre class="r"><code>b &lt;- dataloader_make_iter(train_dl) %&gt;% dataloader_next()
 b</code></pre>
 <p>Un lot de <code>xs</code> a maintenant la forme (32, 14, 1). Étant donné qu’après le regroupement, les éléments du lot se trouvent dans la dimension la plus à gauche, les étapes temporelles consécutives sont maintenant situées dans la deuxième dimension à partir de la gauche.</p>
@@ -1189,7 +1200,7 @@ b</code></pre>
 <li><p>les arguments qu’il attend lorsqu’il est appelé ; et</p></li>
 <li><p>ce qu’il retourne.</p></li>
 </ul>
-<p>Tout d’abord, pour créer un GRU, nous devons au moins lui transmettre le nombre de caractéristiques d’entrée et le nombre d’unités dans la couche cachée. Si nos données ont des éléments de lot dans leur première dimension, nous devons également passer batch_first = TRUE. Par exemple :</p>
+<p>Tout d’abord, pour créer un GRU, nous devons au moins lui transmettre le nombre de caractéristiques d’entrée et le nombre d’unités dans la couche cachée. Si nos données ont des éléments de lot dans leur première dimension, nous devons également passer <code>batch_first = TRUE</code>. Par exemple :</p>
 <pre class="r"><code>gru &lt;- nn_gru(
   input_size = 1, # nombre de caractéristiques d&#39;entrée
   hidden_size = 5, # nombre de caractéristiques cachées (et de sortie !)
@@ -1294,7 +1305,7 @@ preds_ts %&gt;%
 </div>
 <div id="section-modèle-2" class="section level5">
 <h5>Modèle</h5>
-<p>Le modèle doit maintenant produire <code>n_forecast</code> values. Le moyen le plus simple d’y parvenir est de faire en sorte que la couche linéaire finale renvoie <code>n_forecast</code> valeurs prévisionnelles au lieu d’une seule. Cependant, en fonction des données, cela peut ou non donner des performances satisfaisantes.</p>
+<p>Le modèle doit maintenant produire <code>n_forecast</code> valeurs. Le moyen le plus simple d’y parvenir est de faire en sorte que la couche linéaire finale renvoie <code>n_forecast</code> valeurs prévisionnelles au lieu d’une seule. Cependant, en fonction des données, cela peut ou non donner des performances satisfaisantes.</p>
 <p>Au lieu de cela, nous pouvons enchaîner plusieurs couches linéaires, reliées par des non-linéarités. Autrement dit, nous aurons un “réseau dans le réseau” - le GRU sera suivi d’un réseau à propagation directe, également appelé <em>perceptron multicouche</em> (<em>MLP</em>).</p>
 <p>Dans cette deuxième approche, nettement plus puissante, il est facile de s’adapter de manière excessive à l’ensemble de formation. Pour contrer l’adaptation excessive, nous ajoutons une couche <em>dropout</em>. Avec le dropout, une quantité configurable d’aléatoire est ajoutée durant la période d’entrâinement (mais pas durant celles de validation et de test). Techniquement, ceci est réalisé en mettant à zéro de manière aléatoire la fraction souhaitée d’éléments dans le tenseur d’entrée de la couche.</p>
 <p>Vous trouverez ci-dessous des instructions pour mettre en œuvre la deuxième solution.</p>
